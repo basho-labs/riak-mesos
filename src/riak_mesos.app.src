@@ -1,0 +1,12 @@
+{application, riak_mesos,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { riak_mesos_app, []}},
+  {env, []}
+ ]}.

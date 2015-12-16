@@ -44,7 +44,7 @@ Set the status
 Get the status
 
 ```
-curl http://localhost:9000/api/v1/status
+curl http://localhost:9090/api/v1/status
 ```
 
 ```
@@ -55,7 +55,7 @@ Set the status
 
 ```
 curl -i -XPUT -H "Content-Type: application/json" \
-    'http://localhost:9000/api/v1/status'
+    'http://localhost:9090/api/v1/status'
     -d '{"status": "Hi There"}'
 ```
 

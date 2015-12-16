@@ -23,8 +23,6 @@
 
 -export([start/2, stop/1]).
 
--export([web_host_port/0]).
-
 -include("riak_mesos.hrl").
 
 %%%===================================================================
@@ -39,9 +37,3 @@ start(_Type, _StartArgs) ->
 
 stop(_State) ->
     ok.
-
-web_host_port() ->
-    case application:get_env(riak_mesos, listenter_web_http) of
-        {ok, {_, _} = HostPort} -> HostPort;
-        undefined -> {"0.0.0.0", 9000}
-    end.

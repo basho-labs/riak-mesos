@@ -18,34 +18,19 @@
 %%
 %% -------------------------------------------------------------------
 
--module(riak_mesos_sup).
--behaviour(supervisor).
--export([start_link/0]).
--export([init/1]).
+-module(riak_mesos_config).
+
+-export([web_host_port/0]).
 
 -include("riak_mesos.hrl").
-
 
 %%%===================================================================
 %%% API
 %%%===================================================================
 
-start_link() ->
-    supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
-%%%===================================================================
-%%% Callbacks
-%%%===================================================================
-
-init([]) ->
-    WebConfig = riak_mesos_wm_util:dispatch(),
-
-    RIAK_MESOS_SERVER = {riak_mesos_server,
-          {riak_mesos_server, start_link, [[]]},
-          permanent, 5000, worker, [riak_mesos_server]},
-    WEB = {webmachine_mochiweb,
-           {webmachine_mochiweb, start, [WebConfig]},
-           permanent, 5000, worker, [mochiweb_socket_server]},
-    Processes = [RIAK_MESOS_SERVER, WEB],
-
-    {ok, { {one_for_one, 10, 10}, Processes} }.
+web_host_port() ->
+    case application:get_env(riak_mesos, listenter_web_http) of
+        {ok, {_, _} = HostPort} -> HostPort;
+        undefined -> {"0.0.0.0", 9090}
+    end.

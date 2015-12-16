@@ -7,6 +7,8 @@ Top-level application forming the erlang-based Mesos Framework for running Riak
 make rel
 ```
 
+Alternatively `make stage` then `make recompile` when changes are made to `*.erl`.
+
 ### Testing
 
 #### Run the riak_mesos application
@@ -20,7 +22,7 @@ make rel
 Get the status
 
 ```
-./rel/riak_mesos/bin/riak_mesos-admin status
+./rel/riak_mesos/bin/riak-mesos-admin status
 ```
 
 ```
@@ -42,7 +44,7 @@ Set the status
 Get the status
 
 ```
-curl http://localhost:9000/riak_mesos/status
+curl http://localhost:9000/api/v1/status
 ```
 
 ```
@@ -53,7 +55,7 @@ Set the status
 
 ```
 curl -i -XPUT -H "Content-Type: application/json" \
-    'http://localhost:9000/riak_mesos/status'
+    'http://localhost:9000/api/v1/status'
     -d '{"status": "Hi There"}'
 ```
 

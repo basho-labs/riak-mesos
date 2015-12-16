@@ -18,34 +18,9 @@
 %%
 %% -------------------------------------------------------------------
 
--module(riak_mesos_sup).
--behaviour(supervisor).
--export([start_link/0]).
--export([init/1]).
-
--include("riak_mesos.hrl").
-
-
 %%%===================================================================
-%%% API
+%%% Macros
 %%%===================================================================
 
-start_link() ->
-    supervisor:start_link({local, ?MODULE}, ?MODULE, []).
-
-%%%===================================================================
-%%% Callbacks
-%%%===================================================================
-
-init([]) ->
-    WebConfig = riak_mesos_wm_util:dispatch(),
-
-    RIAK_MESOS_SERVER = {riak_mesos_server,
-          {riak_mesos_server, start_link, [[]]},
-          permanent, 5000, worker, [riak_mesos_server]},
-    WEB = {webmachine_mochiweb,
-           {webmachine_mochiweb, start, [WebConfig]},
-           permanent, 5000, worker, [mochiweb_socket_server]},
-    Processes = [RIAK_MESOS_SERVER, WEB],
-
-    {ok, { {one_for_one, 10, 10}, Processes} }.
+-define(RIAK_MESOS_BASE_ROUTE, "api").
+-define(RIAK_MESOS_API_VERSION, "v1").

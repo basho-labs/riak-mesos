@@ -18,34 +18,52 @@
 %%
 %% -------------------------------------------------------------------
 
--module(riak_mesos_sup).
--behaviour(supervisor).
--export([start_link/0]).
--export([init/1]).
+-module(riak_mesos_wm_util).
+
+-export([
+  dispatch/0,
+  build_routes/1,
+  build_routes/2]).
 
 -include("riak_mesos.hrl").
-
 
 %%%===================================================================
 %%% API
 %%%===================================================================
 
-start_link() ->
-    supervisor:start_link({local, ?MODULE}, ?MODULE, []).
+dispatch() ->
+    Resources = [
+        riak_mesos_wm_resource:dispatch()
+    ],
+    {Ip, Port} = riak_mesos_config:web_host_port(),
+    [
+        {ip, Ip},
+        {port, Port},
+        {nodelay, true},
+        {log_dir, "log"},
+        {dispatch, lists:flatten(Resources)}
+    ].
+
+build_routes(Routes) ->
+    build_routes([
+        [?RIAK_MESOS_BASE_ROUTE, ?RIAK_MESOS_API_VERSION]
+    ], Routes, []).
+
+build_routes(Prefixes, Routes) ->
+    build_routes(Prefixes, Routes, []).
 
 %%%===================================================================
-%%% Callbacks
+%%% Private
 %%%===================================================================
 
-init([]) ->
-    WebConfig = riak_mesos_wm_util:dispatch(),
+build_routes([], _, Acc) ->
+    Acc;
+build_routes([P|Prefixes], Routes, Acc) ->
+    PRoutes = build_prefixed_routes(P, Routes, []),
+    build_routes(Prefixes, Routes, Acc ++ PRoutes).
 
-    RIAK_MESOS_SERVER = {riak_mesos_server,
-          {riak_mesos_server, start_link, [[]]},
-          permanent, 5000, worker, [riak_mesos_server]},
-    WEB = {webmachine_mochiweb,
-           {webmachine_mochiweb, start, [WebConfig]},
-           permanent, 5000, worker, [mochiweb_socket_server]},
-    Processes = [RIAK_MESOS_SERVER, WEB],
-
-    {ok, { {one_for_one, 10, 10}, Processes} }.
+build_prefixed_routes(_, [], Acc) ->
+    lists:reverse(Acc);
+build_prefixed_routes(Prefix, [R|Routes], Acc) ->
+    R0 = Prefix ++ R,
+    build_prefixed_routes(Prefix, Routes, [R0|Acc]).

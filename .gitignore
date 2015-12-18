@@ -4,7 +4,8 @@ deps
 *.beam
 *.plt
 erl_crash.dump
-ebin
+*.beam
+ebin/*.app
 rel/riak_mesos
 .concrete/DEV_MODE
 .rebar

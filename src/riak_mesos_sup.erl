@@ -38,6 +38,24 @@ start_link() ->
 %%%===================================================================
 
 init([]) ->
+    Ref = {riak_mesos, scheduler},
+    Scheduler = riak_mesos_scheduler,
+    SchedulerOptions = [
+        {user, <<"root">>},
+        {name, <<"riak">>},
+        {id, undefined},
+        {failover_timeout, undefined},
+        {checkpoint, undefined},
+        {role, <<"riak">>},
+        {hostname, undefined},
+        {principal, <<"riak">>},
+        {webui_url, undefined},
+        {capabilities, undefined},
+        {labels, undefined}
+    ],
+    Options = [{master_hosts, [<<"localhost:5050">>]}],
+    erl_mesos:start_scheduler(Ref, Scheduler, SchedulerOptions, Options),
+
     WebConfig = riak_mesos_wm_util:dispatch(),
 
     RIAK_MESOS_SERVER = {riak_mesos_server,

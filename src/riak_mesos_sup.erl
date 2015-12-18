@@ -53,7 +53,7 @@ init([]) ->
         {capabilities, undefined},
         {labels, undefined}
     ],
-    Options = [{master_hosts, [<<"localhost:5050">>]}],
+    Options = [{master_hosts, [<<"vagrant-ubuntu-trusty-64.local:5050">>]}],
     erl_mesos:start_scheduler(Ref, Scheduler, SchedulerOptions, Options),
 
     WebConfig = riak_mesos_wm_util:dispatch(),

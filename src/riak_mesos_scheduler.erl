@@ -14,8 +14,7 @@
          handle_info/3,
          terminate/3]).
 
--record(state, {callback,
-                test_pid}).
+-record(state, {callback}).
 
 %%%===================================================================
 %%% Callbacks
@@ -23,44 +22,43 @@
 
 init(Options) ->
     FrameworkInfo = framework_info(Options),
-    TestPid = proplists:get_value(test_pid, Options),
-    {ok, FrameworkInfo, true, #state{callback = init,
-                                     test_pid = TestPid}}.
+    lager:info("~n~p~n~p", [Options, FrameworkInfo]),
+    {ok, FrameworkInfo, true, #state{callback = init}}.
 
-registered(SchedulerInfo, EventSubscribed,
-           #state{test_pid = TestPid} = State) ->
-    reply(TestPid, {registered, self(), SchedulerInfo, EventSubscribed}),
+registered(_SchedulerInfo, EventSubscribed, State) ->
+    lager:info("~p", [EventSubscribed]),
     {ok, State#state{callback = registered}}.
 
-disconnected(SchedulerInfo, #state{test_pid = TestPid} = State) ->
-    reply(TestPid, {disconnected, self(), SchedulerInfo}),
+disconnected(_SchedulerInfo, State) ->
+    lager:info("disconnected", []),
     {ok, State#state{callback = disconnected}}.
 
-reregistered(SchedulerInfo, #state{test_pid = TestPid} = State) ->
-    reply(TestPid, {reregistered, self(), SchedulerInfo}),
+reregistered(_SchedulerInfo, State) ->
+    lager:info("reregistered", []),
     {ok, State#state{callback = reregistered}}.
 
-resource_offers(SchedulerInfo, EventOffers,
-                #state{test_pid = TestPid} = State) ->
-    reply(TestPid, {resource_offers, self(), SchedulerInfo, EventOffers}),
+resource_offers(_SchedulerInfo, EventOffers,State) ->
+    lager:info("~p", [EventOffers]),
     {ok, State#state{callback = resource_offers}}.
 
-offer_rescinded(SchedulerInfo, EventRescind,
-                #state{test_pid = TestPid} = State) ->
-    reply(TestPid, {offer_rescinded, self(), SchedulerInfo, EventRescind}),
+offer_rescinded(_SchedulerInfo, EventRescind, State) ->
+    lager:info("~p", [EventRescind]),
     {ok, State#state{callback = offer_rescinded}}.
 
-error(SchedulerInfo, EventError, #state{test_pid = TestPid} = State) ->
-    reply(TestPid, {error, self(), SchedulerInfo, EventError}),
+error(_SchedulerInfo, EventError, State) ->
+    lager:error("~p", [EventError]),
     {stop, State#state{callback = error}}.
 
 handle_info(_SchedulerInfo, stop, State) ->
+    lager:info("stopped", []),
     {stop, State};
-handle_info(_SchedulerInfo, _Info, State) ->
+handle_info(_SchedulerInfo, Info, State) ->
+    lager:warn("~p", [Info]),
     {ok, State}.
 
-terminate(SchedulerInfo, Reason, #state{test_pid = TestPid} = State) ->
-    reply(TestPid, {terminate, self(), SchedulerInfo, Reason, State}).
+terminate(_SchedulerInfo, Reason, _State) ->
+    lager:warning("~p", [Reason]),
+    ok.
 
 %% ====================================================================
 %% Private
@@ -89,8 +87,3 @@ framework_info(Options) ->
                     webui_url = WebuiUrl,
                     capabilities = Capabilities,
                     labels = Labels}.
-
-reply(undefined, _Message) ->
-    undefined;
-reply(TestPid, Message) ->
-    TestPid ! Message.

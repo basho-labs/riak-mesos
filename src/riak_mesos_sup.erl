@@ -49,15 +49,15 @@ init([]) ->
     SchedulerOptions = [],
     Options = [{master_hosts, [Master]}],
 
-    %% TODO: Maybe start this in a manager so that the pid can be tracked more better
-    erl_mesos:start_scheduler(Ref, Scheduler, SchedulerOptions, Options),
-
-    RIAK_MESOS_SERVER = {riak_mesos_server,
+    SCHEDULER = {riak_mesos_scheduler,
+        {erl_mesos, start_scheduler, [Ref, Scheduler, SchedulerOptions, Options]},
+        permanent, 5000, worker, [riak_mesos_scheduler]},
+    SERVER = {riak_mesos_server,
           {riak_mesos_server, start_link, [[]]},
           permanent, 5000, worker, [riak_mesos_server]},
     WEB = {webmachine_mochiweb,
            {webmachine_mochiweb, start, [WebConfig]},
            permanent, 5000, worker, [mochiweb_socket_server]},
-    Processes = [RIAK_MESOS_SERVER, WEB],
+    Processes = [SCHEDULER, SERVER, WEB],
 
     {ok, { {one_for_one, 10, 10}, Processes} }.

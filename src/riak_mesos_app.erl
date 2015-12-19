@@ -30,7 +30,7 @@
 %%%===================================================================
 
 start(_Type, _StartArgs) ->
-    erl_mesos:start(),
+    application:ensure_started(erl_mesos),
     {ok, Pid} = riak_mesos_sup:start_link(),
     riak_mesos_cli:load_schema(),
     riak_mesos_cli:register(),

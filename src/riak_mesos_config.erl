@@ -20,7 +20,11 @@
 
 -module(riak_mesos_config).
 
--export([web_host_port/0]).
+-export([
+  get_value/2,
+  get_value/3,
+  web_host_port/0
+]).
 
 -include("riak_mesos.hrl").
 
@@ -28,9 +32,35 @@
 %%% API
 %%%===================================================================
 
+get_value(Key, Default) ->
+    case get_env_value(Key) of
+        false ->
+            application:get_env(riak_mesos, Key, Default);
+        Value -> Value
+    end.
+
+get_value(Key, Default, Type) ->
+    case get_value(Key, Default) of
+        Default -> Default;
+        V -> translate_value(V, Type)
+    end.
 
 web_host_port() ->
     case application:get_env(riak_mesos, listenter_web_http) of
         {ok, {_, _} = HostPort} -> HostPort;
         undefined -> {"0.0.0.0", 9090}
     end.
+
+%% ====================================================================
+%% Private
+%% ====================================================================
+
+translate_value(Value, integer) when is_list(Value) -> list_to_integer(Value);
+translate_value(Value, boolean) when is_list(Value) -> list_to_atom(Value);
+translate_value(Value, atom) when is_list(Value) -> list_to_atom(Value);
+translate_value(Value, binary) when is_list(Value) -> list_to_binary(Value);
+translate_value(Value, _) -> Value.
+
+get_env_value(Key) ->
+    Key1 = "RIAK_MESOS_" ++ string:to_upper(atom_to_list(Key)),
+    os:getenv(Key1).

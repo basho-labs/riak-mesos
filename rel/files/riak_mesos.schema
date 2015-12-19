@@ -1,10 +1,48 @@
 %%-*- mode: erlang -*-
 
-%% @doc HTTP listener for riak_mesos API
-{mapping, "listener.web.http", "riak_mesos.listenter_web_http", [
-  {default, {"{{riak_mesos_web_http_ip}}" , {{riak_mesos_web_http_port}} }},
-  {datatype, ip},
-  {validators, ["valid_host"]}
+%% @doc riak_mesos Framework master.
+{mapping, "framework.master", "riak_mesos.master", [
+  {default, "{{framework_master}}"}
+]}.
+
+%% @doc riak_mesos Framework zookeeper.
+{mapping, "framework.zk", "riak_mesos.zk", [
+  {default, "{{framework_zk}}"}
+]}.
+
+%% @doc riak_mesos Framework hostname.
+{mapping, "framework.hostname", "riak_mesos.hostname", [
+  {commented, "{{framework_hostname}}"}
+]}.
+
+%% @doc riak_mesos Framework ip.
+{mapping, "framework.ip", "riak_mesos.ip", [
+  {default, "{{framework_ip}}"}
+]}.
+
+%% @doc riak_mesos Framework port.
+{mapping, "framework.port", "riak_mesos.port", [
+  {default, "{{framework_port}}"}
+]}.
+
+%% @doc riak_mesos Framework user.
+{mapping, "framework.user", "riak_mesos.user", [
+  {default, "{{framework_user}}"}
+]}.
+
+%% @doc riak_mesos Framework name.
+{mapping, "framework.name", "riak_mesos.name", [
+  {default, "{{framework_name}}"}
+]}.
+
+%% @doc riak_mesos Framework role.
+{mapping, "framework.role", "riak_mesos.role", [
+  {default, "{{framework_role}}"}
+]}.
+
+%% @doc riak_mesos Framework authentication principal.
+{mapping, "framework.principal", "riak_mesos.principal", [
+  {default, "{{framework_principal}}"}
 ]}.
 
 %% @doc Cookie for distributed node communication.  All nodes in the

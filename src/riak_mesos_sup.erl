@@ -38,14 +38,26 @@ start_link() ->
 %%%===================================================================
 
 init([]) ->
-    WebConfig = riak_mesos_wm_util:dispatch(),
+    % Zookeeper = riak_mesos_config:get_value(zk, <<"master.mesos:2181">>, binary), %% TODO: integrate with metadata manager once available
+    Ip = riak_mesos_config:get_value(ip, "0.0.0.0"),
+    Port = riak_mesos_config:get_value(port, 9090, integer), %% TODO: Will need to get this dynamically... somehow
+    WebConfig = riak_mesos_wm_util:dispatch(Ip, Port),
+    Master = riak_mesos_config:get_value(master, <<"master.mesos:5050">>, binary), %% TODO: need to turn this into a list if it contains commas
 
-    RIAK_MESOS_SERVER = {riak_mesos_server,
+    Ref = {riak_mesos, scheduler},
+    Scheduler = riak_mesos_scheduler,
+    SchedulerOptions = [],
+    Options = [{master_hosts, [Master]}],
+
+    SCHEDULER = {riak_mesos_scheduler,
+        {erl_mesos, start_scheduler, [Ref, Scheduler, SchedulerOptions, Options]},
+        permanent, 5000, worker, [riak_mesos_scheduler]},
+    SERVER = {riak_mesos_server,
           {riak_mesos_server, start_link, [[]]},
           permanent, 5000, worker, [riak_mesos_server]},
     WEB = {webmachine_mochiweb,
            {webmachine_mochiweb, start, [WebConfig]},
            permanent, 5000, worker, [mochiweb_socket_server]},
-    Processes = [RIAK_MESOS_SERVER, WEB],
+    Processes = [SCHEDULER, SERVER, WEB],
 
     {ok, { {one_for_one, 10, 10}, Processes} }.

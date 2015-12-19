@@ -21,7 +21,7 @@
 -module(riak_mesos_wm_util).
 
 -export([
-  dispatch/0,
+  dispatch/2,
   build_routes/1,
   build_routes/2]).
 
@@ -31,11 +31,10 @@
 %%% API
 %%%===================================================================
 
-dispatch() ->
+dispatch(Ip, Port) ->
     Resources = [
         riak_mesos_wm_resource:dispatch()
     ],
-    {Ip, Port} = riak_mesos_config:web_host_port(),
     [
         {ip, Ip},
         {port, Port},

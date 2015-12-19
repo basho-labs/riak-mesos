@@ -21,7 +21,7 @@
 %%%===================================================================
 
 init(Options) ->
-    FrameworkInfo = framework_info(Options),
+    FrameworkInfo = framework_info(),
     lager:info("~n~p~n~p", [Options, FrameworkInfo]),
     {ok, FrameworkInfo, true, #state{callback = init}}.
 
@@ -64,26 +64,21 @@ terminate(_SchedulerInfo, Reason, _State) ->
 %% Private
 %% ====================================================================
 
-framework_info(Options) ->
-    User = proplists:get_value(user, Options, <<>>),
-    Name = proplists:get_value(name, Options, <<>>),
-    Id = proplists:get_value(id, Options, undefined),
-    FailoverTimeout = proplists:get_value(failover_timeout, Options, undefined),
-    Checkpoint = proplists:get_value(checkpoint, Options, undefined),
-    Role = proplists:get_value(role, Options, undefined),
-    Hostname = proplists:get_value(hostname, Options, undefined),
-    Principal = proplists:get_value(principal, Options, undefined),
-    WebuiUrl = proplists:get_value(webui_url, Options, undefined),
-    Capabilities = proplists:get_value(capabilities, Options, undefined),
-    Labels = proplists:get_value(labels, Options, undefined),
+framework_info() ->
+    User = riak_mesos_config:get_value(user, <<"root">>, binary),
+    Name = riak_mesos_config:get_value(name, <<"riak">>, binary),
+    Role = riak_mesos_config:get_value(role, <<"riak">>, binary),
+    Hostname = riak_mesos_config:get_value(hostname, undefined, binary),
+    Principal = riak_mesos_config:get_value(principal, <<"riak">>, binary),
+
     #framework_info{user = User,
                     name = Name,
-                    id = Id,
-                    failover_timeout = FailoverTimeout,
-                    checkpoint = Checkpoint,
                     role = Role,
                     hostname = Hostname,
                     principal = Principal,
-                    webui_url = WebuiUrl,
-                    capabilities = Capabilities,
-                    labels = Labels}.
+                    checkpoint = undefined, %% TODO: We will want to enable checkpointing
+                    id = undefined, %% TODO: Will need to check ZK for this for reregistration
+                    webui_url = undefined, %% TODO: Get this from webmachine helper probably
+                    failover_timeout = undefined, %% TODO: Add this to configurable options
+                    capabilities = undefined,
+                    labels = undefined}.

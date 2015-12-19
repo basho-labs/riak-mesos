@@ -38,27 +38,19 @@ start_link() ->
 %%%===================================================================
 
 init([]) ->
-    Ref = {riak_mesos, scheduler},
-    Scheduler = riak_mesos_scheduler,
-    SchedulerOptions = [
-        {user, riak_mesos_config:get_value(user, <<"root">>, binary)},
-        {name, riak_mesos_config:get_value(name, <<"riak">>, binary)},
-        {role, riak_mesos_config:get_value(role, <<"riak">>, binary)},
-        {hostname, riak_mesos_config:get_value(hostname, undefined, binary)},
-        {principal, riak_mesos_config:get_value(principal, <<"riak">>, binary)},
-        {checkpoint, undefined},
-        {id, undefined}, %% TODO: Will need to check ZK for this for reregistration
-        {failover_timeout, undefined},
-        {webui_url, undefined},
-        {capabilities, undefined},
-        {labels, undefined}
-    ],
-    Options = [{master_hosts, [riak_mesos_config:get_value(master, <<"master.mesos:5050">>, binary)]}],
-    erl_mesos:start_scheduler(Ref, Scheduler, SchedulerOptions, Options),
-
+    % Zookeeper = riak_mesos_config:get_value(zk, <<"master.mesos:2181">>, binary), %% TODO: integrate with metadata manager once available
     Ip = riak_mesos_config:get_value(ip, "0.0.0.0"),
     Port = riak_mesos_config:get_value(port, 9090, integer), %% TODO: Will need to get this dynamically... somehow
     WebConfig = riak_mesos_wm_util:dispatch(Ip, Port),
+    Master = riak_mesos_config:get_value(master, <<"master.mesos:5050">>, binary), %% TODO: need to turn this into a list if it contains commas
+
+    Ref = {riak_mesos, scheduler},
+    Scheduler = riak_mesos_scheduler,
+    SchedulerOptions = [],
+    Options = [{master_hosts, [Master]}],
+
+    %% TODO: Maybe start this in a manager so that the pid can be tracked more better
+    erl_mesos:start_scheduler(Ref, Scheduler, SchedulerOptions, Options),
 
     RIAK_MESOS_SERVER = {riak_mesos_server,
           {riak_mesos_server, start_link, [[]]},

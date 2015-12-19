@@ -22,8 +22,7 @@
 
 -export([
   get_value/2,
-  get_value/3,
-  web_host_port/0
+  get_value/3
 ]).
 
 -include("riak_mesos.hrl").
@@ -43,12 +42,6 @@ get_value(Key, Default, Type) ->
     case get_value(Key, Default) of
         Default -> Default;
         V -> translate_value(V, Type)
-    end.
-
-web_host_port() ->
-    case application:get_env(riak_mesos, listenter_web_http) of
-        {ok, {_, _} = HostPort} -> HostPort;
-        undefined -> {"0.0.0.0", 9090}
     end.
 
 %% ====================================================================

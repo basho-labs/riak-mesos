@@ -12,7 +12,7 @@ deps:
 	git submodule update --init --recursive
 
 clean:
-	$(foreach dep,$(wildcard deps/*), $(MAKE) clean;)
+	$(foreach dep,$(shell ls deps), cd $(BASE_DIR)/deps/$(dep) && $(MAKE) clean && git reset --hard HEAD;)
 
 updatehead:
 	git submodule update --init --recursive

@@ -1,26 +1,19 @@
-BASE_DIR         = $(shell pwd)
-ERLANG_BIN       = $(shell dirname $(shell which erl))
-REBAR           ?= $(BASE_DIR)/rebar
-OVERLAY_VARS    ?=
+BASE_DIR                    = $(PWD)
+riak-mesos-scheduler_TAG   ?= master
+riak-mesos-executor_TAG    ?= 0.1.1
+riak-mesos-director_TAG    ?= 0.3.0
+riak_explorer_TAG          ?= riak-addon-0.1.0
 
-.PHONY: deps
+.PHONY: all deps clean updatehead
 
-all: compile
-compile: deps
-	$(REBAR) compile
-recompile:
-	$(REBAR) compile skip_deps=true
+all: deps
+
 deps:
-	$(REBAR) get-deps
-cleantest:
-	rm -rf .eunit/*
-test: cleantest
-	$(REBAR)  skip_deps=true eunit
-rel: relclean deps compile
-	$(REBAR) compile
-	$(REBAR) skip_deps=true generate $(OVERLAY_VARS)
-relclean:
-	rm -rf rel/riak_mesos
-stage: rel
-	$(foreach dep,$(wildcard deps/*), rm -rf rel/riak_mesos/lib/$(shell basename $(dep))-* && ln -sf $(abspath $(dep)) rel/riak_mesos/lib;)
-	$(foreach app,$(wildcard apps/*), rm -rf rel/riak_mesos/lib/$(shell basename $(app))-* && ln -sf $(abspath $(app)) rel/riak_mesos/lib;)
+	git submodule update --init --recursive
+
+clean:
+	$(foreach dep,$(wildcard deps/*), $(MAKE) clean;)
+
+updatehead:
+	git submodule update --init --recursive
+	$(foreach dep,$(shell ls deps), cd $(BASE_DIR)/deps/$(dep) && git fetch origin $($(dep)_TAG) && git checkout origin/$($(dep)_TAG);)

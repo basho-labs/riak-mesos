@@ -16,4 +16,4 @@ clean:
 
 updatehead:
 	git submodule update --init --recursive
-	$(foreach dep,$(shell ls deps), cd $(BASE_DIR)/deps/$(dep) && git fetch origin $($(dep)_TAG) && git checkout origin/$($(dep)_TAG);)
+	$(foreach dep,$(shell ls deps), cd $(BASE_DIR)/deps/$(dep) && git fetch origin $($(dep)_TAG) && git checkout $($(dep)_TAG);)

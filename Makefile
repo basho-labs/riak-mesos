@@ -8,6 +8,9 @@ riak_explorer_TAG          ?= riak-addon-0.1.0
 
 all: deps
 
+package:
+	$(foreach dep,$(shell ls deps), cd $(BASE_DIR)/deps/$(dep) && $(MAKE) package;)
+
 deps:
 	git submodule update --init --recursive
 

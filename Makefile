@@ -16,24 +16,37 @@ export OSVERSION           ?= trusty
 all: deps updatehead tarball
 
 tarball:
-	$(foreach dep,$(shell ls framework), cd $(BASE_DIR)/framework/$(dep) && $(MAKE) tarball;)
+	$(foreach dep,$(shell ls framework), \
+		cd $(BASE_DIR)/framework/$(dep) && $(MAKE) tarball;)
 	cd riak && $(MAKE) tarball
 
 deps:
 	git submodule update --init --recursive
-	$(foreach dep,$(shell ls framework), cd $(BASE_DIR)/framework/$(dep) && git checkout master && git pull;)
-	$(foreach dep,$(shell ls tools), cd $(BASE_DIR)/tools/$(dep) && git checkout master && git pull;)
+	$(foreach dep,$(shell ls framework), \
+		cd $(BASE_DIR)/framework/$(dep) && \
+			git checkout master && git pull;)
+	$(foreach dep,$(shell ls tools), \
+		cd $(BASE_DIR)/tools/$(dep) && \
+			git checkout master && git pull;)
 	cd $(BASE_DIR)/riak/$(RIAK_SOURCE_DIR) && git checkout develop && git pull
 
 clean:
-	$(foreach dep,$(shell ls framework), cd $(BASE_DIR)/framework/$(dep) && $(MAKE) clean && git reset --hard HEAD;)
+	$(foreach dep,$(shell ls framework), \
+		cd $(BASE_DIR)/framework/$(dep) && \
+			$(MAKE) clean && git reset --hard HEAD;)
 	cd riak && $(MAKE) clean
 
 updatehead:
-	$(foreach dep,$(shell ls framework), cd $(BASE_DIR)/framework/$(dep) && git fetch origin $($(dep)_TAG) && git checkout $($(dep)_TAG);)
-	$(foreach dep,$(shell ls tools), cd $(BASE_DIR)/tools/$(dep) && git fetch origin $($(dep)_TAG) && git checkout $($(dep)_TAG);)
-	cd $(BASE_DIR)/riak/$(RIAK_SOURCE_DIR) && git fetch origin $(RIAK_TAG) && git checkout $(RIAK_TAG)
+	$(foreach dep,$(shell ls framework), \
+		cd $(BASE_DIR)/framework/$(dep) && \
+			git fetch origin $($(dep)_TAG) && git checkout $($(dep)_TAG);)
+	$(foreach dep,$(shell ls tools), \
+		cd $(BASE_DIR)/tools/$(dep) && \
+			git fetch origin $($(dep)_TAG) && git checkout $($(dep)_TAG);)
+	cd $(BASE_DIR)/riak/$(RIAK_SOURCE_DIR) && \
+		git fetch origin $(RIAK_TAG) && git checkout $(RIAK_TAG)
 
 sync:
-	$(foreach dep,$(shell ls framework), cd $(BASE_DIR)/framework/$(dep) && $(MAKE) sync;)
+	$(foreach dep,$(shell ls framework), \
+		cd $(BASE_DIR)/framework/$(dep) && $(MAKE) sync;)
 	cd $(BASE_DIR)/riak && make sync

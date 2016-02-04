@@ -16,3 +16,9 @@
 [submodule "riak/riak_ee"]
 	path = riak/riak_ee
 	url = git@github.com:basho/riak_ee.git
+[submodule "tools/riak-mesos-tools"]
+	path = tools/riak-mesos-tools
+	url = https://github.com/basho-labs/riak-mesos-tools
+[submodule "tools/riak-mesos-dcos-repo"]
+	path = tools/riak-mesos-dcos-repo
+	url = https://github.com/basho-labs/riak-mesos-dcos-repo

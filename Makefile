@@ -23,7 +23,7 @@ deps:
 	git submodule update --init --recursive
 	$(foreach dep,$(shell ls framework), cd $(BASE_DIR)/framework/$(dep) && git checkout master && git pull;)
 	$(foreach dep,$(shell ls tools), cd $(BASE_DIR)/tools/$(dep) && git checkout master && git pull;)
-	cd $(BASE_DIR)/riak/$(RIAK_SOURCE_DIR) git checkout develop && git pull
+	cd $(BASE_DIR)/riak/$(RIAK_SOURCE_DIR) && git checkout develop && git pull
 
 clean:
 	$(foreach dep,$(shell ls framework), cd $(BASE_DIR)/framework/$(dep) && $(MAKE) clean && git reset --hard HEAD;)

@@ -1,5 +1,4 @@
 RIAK_REPO        ?= riak
-RIAK_GIT         ?= https://github.com/basho/riak.git
 RIAK_TAG         ?= riak-2.1.3
 RIAK_SOURCE_DIR  ?= riak
 RIAK_PKG_VERSION ?= 2.1.3
@@ -15,10 +14,8 @@ PKGNAME           = $(RIAK_REPO)-$(RIAK_PKG_VERSION)-$(ARCH).tar.gz
 
 all: tarball
 
-$(RIAK_SOURCE_DIR):
-	git clone $(RIAK_GIT)
-	cd $(RIAK_SOURCE_DIR) && git checkout $(RIAK_TAG)
 rel: $(RIAK_SOURCE_DIR)
+	cd $(RIAK_SOURCE_DIR) && git checkout $(RIAK_TAG)
 	cd $(RIAK_SOURCE_DIR) && $(MAKE) rel
 clean_package:
 	-rm -rf $(RIAK_BASE)

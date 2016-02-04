@@ -10,19 +10,21 @@ export OSVERSION           ?= trusty
 
 .PHONY: all deps clean updatehead
 
-all: updatehead tarball
+all: deps updatehead tarball
 
 tarball:
-	$(foreach dep,$(shell ls deps), cd $(BASE_DIR)/deps/$(dep) && $(MAKE) tarball;)
+	$(foreach dep,$(shell ls framework), cd $(BASE_DIR)/framework/$(dep) && $(MAKE) tarball;)
 	cd riak && $(MAKE) tarball
 
 deps:
 	git submodule update --init --recursive
-	$(foreach dep,$(shell ls deps), cd $(BASE_DIR)/deps/$(dep) && git checkout master && git pull;)
+	$(foreach dep,$(shell ls framework), cd $(BASE_DIR)/framework/$(dep) && git checkout master && git pull;)
+	cd riak/riak && git checkout develop && git pull
+	cd riak/riak_ee && git checkout develop && git pull
 
 clean:
-	$(foreach dep,$(shell ls deps), cd $(BASE_DIR)/deps/$(dep) && $(MAKE) clean && git reset --hard HEAD;)
+	$(foreach dep,$(shell ls framework), cd $(BASE_DIR)/framework/$(dep) && $(MAKE) clean && git reset --hard HEAD;)
 	cd riak && $(MAKE) clean
 
-updatehead: deps
-	$(foreach dep,$(shell ls deps), cd $(BASE_DIR)/deps/$(dep) && git fetch origin $($(dep)_TAG) && git checkout $($(dep)_TAG);)
+updatehead:
+	$(foreach dep,$(shell ls framework), cd $(BASE_DIR)/framework/$(dep) && git fetch origin $($(dep)_TAG) && git checkout $($(dep)_TAG);)

@@ -10,3 +10,9 @@
 [submodule "deps/riak_explorer"]
 	path = deps/riak_explorer
 	url = https://github.com/basho-labs/riak_explorer.git
+[submodule "riak/riak"]
+	path = riak/riak
+	url = https://github.com/basho/riak
+[submodule "riak/riak_ee"]
+	path = riak/riak_ee
+	url = git@github.com:basho/riak_ee.git

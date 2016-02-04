@@ -1,14 +1,14 @@
-[submodule "deps/riak-mesos-scheduler"]
-	path = deps/riak-mesos-scheduler
+[submodule "framework/riak-mesos-scheduler"]
+	path = framework/riak-mesos-scheduler
 	url = git@github.com:basho-labs/riak-mesos-scheduler.git
-[submodule "deps/riak-mesos-executor"]
-	path = deps/riak-mesos-executor
+[submodule "framework/riak-mesos-executor"]
+	path = framework/riak-mesos-executor
 	url = git@github.com:basho-labs/riak-mesos-executor.git
-[submodule "deps/riak-mesos-director"]
-	path = deps/riak-mesos-director
+[submodule "framework/riak-mesos-director"]
+	path = framework/riak-mesos-director
 	url = https://github.com/basho-labs/riak-mesos-director.git
-[submodule "deps/riak_explorer"]
-	path = deps/riak_explorer
+[submodule "framework/riak_explorer"]
+	path = framework/riak_explorer
 	url = https://github.com/basho-labs/riak_explorer.git
 [submodule "riak/riak"]
 	path = riak/riak

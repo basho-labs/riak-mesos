@@ -21,24 +21,16 @@ tarball:
 	cd riak && $(MAKE) tarball
 
 update-tools:
-	SCHEDULER_URL_REMOTE = $(shell cat $(BASE_DIR)/framework/riak-mesos-scheduler/packages/remote.txt)
-	SCHEDULER_URL_LOCAL = $(shell cat $(BASE_DIR)/framework/riak-mesos-scheduler/packages/local.txt)
-	EXECUTOR_URL_REMOTE = $(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/remote.txt)
-	EXECUTOR_URL_LOCAL = $(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/local.txt)
-	NODE_URL_REMOTE = $(shell cat $(BASE_DIR)/riak/packages/remote.txt)
-	NODE_URL_LOCAL = $(shell cat $(BASE_DIR)/riak/packages/local.txt)
-	PROXY_URL_REMOTE = $(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/remote.txt)
-	PROXY_URL_LOCAL = $(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/local.txt)
 	cp $(BASE_DIR)/tools/riak-mesos-tools/config/config.template.json $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json
 	cp $(BASE_DIR)/tools/riak-mesos-tools/config/config.template.json $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json
-	$(shell sed -i '' "s,{{scheduler_url}},$(SCHEDULER_URL_REMOTE),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json)
-	$(shell sed -i '' "s,{{scheduler_url}},$(SCHEDULER_URL_LOCAL),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json)
-	$(shell sed -i '' "s,{{executor_url}},$(EXECUTOR_URL_REMOTE),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json)
-	$(shell sed -i '' "s,{{executor_url}},$(EXECUTOR_URL_LOCAL),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json)
-	$(shell sed -i '' "s,{{node_url}},$(NODE_URL_REMOTE),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json)
-	$(shell sed -i '' "s,{{node_url}},$(NODE_URL_LOCAL),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json)
-	$(shell sed -i '' "s,{{proxy_url}},$(PROXY_URL_REMOTE),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json)
-	$(shell sed -i '' "s,{{proxy_url}},$(PROXY_URL_LOCAL),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json)
+	$(shell sed -i '' "s,{{scheduler_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-scheduler/packages/remote.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json)
+	$(shell sed -i '' "s,{{scheduler_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-scheduler/packages/local.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json)
+	$(shell sed -i '' "s,{{executor_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/remote.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json)
+	$(shell sed -i '' "s,{{executor_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/local.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json)
+	$(shell sed -i '' "s,{{node_url}},$(shell cat $(BASE_DIR)/riak/packages/remote.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json)
+	$(shell sed -i '' "s,{{node_url}},$(shell cat $(BASE_DIR)/riak/packages/local.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json)
+	$(shell sed -i '' "s,{{proxy_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/remote.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json)
+	$(shell sed -i '' "s,{{proxy_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/local.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json)
 	$(shell sed -i '' "s,^version = .*$$,version = '$(riak-mesos-tools_TAG)',g" $(BASE_DIR)/tools/riak-mesos-tools/riak_mesos/constants.py)
 
 deps:

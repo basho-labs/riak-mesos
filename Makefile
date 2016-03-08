@@ -13,7 +13,7 @@ export OSVERSION           ?= trusty
 
 .PHONY: all deps clean updatehead
 
-all: deps updatehead tarball
+all: deps updatehead tarball update-tools
 
 tarball:
 	$(foreach dep,$(shell ls framework), \

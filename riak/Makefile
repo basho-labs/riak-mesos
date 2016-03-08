@@ -9,8 +9,8 @@ OSNAME           ?= ubuntu
 OSVERSION        ?= trusty
 S3_BASE         ?= riak-tools
 S3_PREFIX       ?= http://$(S3_BASE).s3.amazonaws.com/
-DEPLOY_BASE     ?= $(REPO)/$(MAJOR).$(MINOR)/$(PKG_VERSION)/$(OSNAME)/$(OSVERSION)/
-PKGNAME         ?= $(REPO)-$(PKG_VERSION)-$(ARCH).tar.gz
+DEPLOY_BASE     ?= $(RIAK_REPO)/$(MAJOR).$(MINOR)/$(RIAK_PKG_VERSION)/$(OSNAME)/$(OSVERSION)/
+PKGNAME         ?= $(RIAK_REPO)-$(RIAK_PKG_VERSION)-$(ARCH).tar.gz
 RIAK_BASE        ?= root
 
 .PHONY: all tarball clean sync

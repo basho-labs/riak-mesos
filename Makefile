@@ -23,15 +23,15 @@ tarball:
 update-tools:
 	cp $(BASE_DIR)/tools/riak-mesos-tools/config/config.template.json $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json
 	cp $(BASE_DIR)/tools/riak-mesos-tools/config/config.template.json $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json
-	$(shell sed -i '' "s,{{scheduler_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-scheduler/packages/remote.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json)
-	$(shell sed -i '' "s,{{scheduler_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-scheduler/packages/local.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json)
-	$(shell sed -i '' "s,{{executor_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/remote.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json)
-	$(shell sed -i '' "s,{{executor_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/local.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json)
-	$(shell sed -i '' "s,{{node_url}},$(shell cat $(BASE_DIR)/riak/packages/remote.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json)
-	$(shell sed -i '' "s,{{node_url}},$(shell cat $(BASE_DIR)/riak/packages/local.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json)
-	$(shell sed -i '' "s,{{proxy_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/remote.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json)
-	$(shell sed -i '' "s,{{proxy_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/local.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json)
-	$(shell sed -i '' "s,^version = .*$$,version = '$(riak-mesos-tools_TAG)',g" $(BASE_DIR)/tools/riak-mesos-tools/riak_mesos/constants.py)
+	sed -i "s,{{scheduler_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-scheduler/packages/remote.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json
+	sed -i "s,{{scheduler_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-scheduler/packages/local.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json
+	sed -i "s,{{executor_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/remote.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json
+	sed -i "s,{{executor_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/local.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json
+	sed -i "s,{{node_url}},$(shell cat $(BASE_DIR)/riak/packages/remote.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json
+	sed -i "s,{{node_url}},$(shell cat $(BASE_DIR)/riak/packages/local.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json
+	sed -i "s,{{proxy_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/remote.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json
+	sed -i "s,{{proxy_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/local.txt),g" $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json
+	sed -i "s,^version = .*$$,version = '$(riak-mesos-tools_TAG)',g" $(BASE_DIR)/tools/riak-mesos-tools/riak_mesos/constants.py
 
 deps:
 	git submodule update --init --recursive

@@ -15,8 +15,8 @@ TOOLS_TEMPLATE ?= $(BASE_DIR)/tools/riak-mesos-tools/config/config.template.json
 TOOLS_REMOTE ?= $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json
 TOOLS_LOCAL ?= $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json
 
-REPO_TEMPLATE ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/riak-mesos-dcos-repo/repo/packages/R/riak/0/config.template.json
-REPO_REMOTE ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/riak-mesos-dcos-repo/repo/packages/R/riak/0/config.json
+REPO_TEMPLATE ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/config.template.json
+REPO_REMOTE ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/config.json
 
 .PHONY: all deps clean updatehead
 

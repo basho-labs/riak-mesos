@@ -5,7 +5,6 @@ riak-mesos-director_TAG       ?= 0.3.1
 riak_explorer_TAG             ?= 0.1.1-patch
 riak-mesos-tools_TAG          ?= 0.4.0
 riak-mesos-dcos-repo_TAG      ?= 0.4.0
-TOOLS_VERSION                 ?= 0.4.0
 export RIAK_TAG               ?= riak-2.1.3
 export RIAK_SOURCE_DIR        ?= riak
 export ARCH                   ?= amd64
@@ -22,6 +21,8 @@ TOOLS_REMOTE                  ?= $(BASE_DIR)/tools/riak-mesos-tools/config/confi
 TOOLS_LOCAL                   ?= $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json
 REPO_TEMPLATE                 ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/config.template.json
 REPO_REMOTE                   ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/config.json
+TOOLS_VERSION_FILE            ?= $(BASE_DIR)/tools/riak-mesos-tools/riak_mesos/constants.py
+REPO_VERSION_FILE             ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/package.json
 
 .PHONY: all deps clean updatehead
 
@@ -47,7 +48,8 @@ update-tools:
 	sed -i "s,{{explorer_url}},$(shell cat $(BASE_DIR)/framework/riak_explorer/packages/remote.txt),g" $(TOOLS_REMOTE)
 	sed -i "s,{{explorer_url}},$(shell cat $(BASE_DIR)/framework/riak_explorer/packages/local.txt),g" $(TOOLS_LOCAL)
 	sed -i "s,{{explorer_url}},$(shell cat $(BASE_DIR)/framework/riak_explorer/packages/remote.txt),g" $(REPO_REMOTE)
-	sed -i "s,^version = .*$$,version = '$(TOOLS_VERSION)',g" $(BASE_DIR)/tools/riak-mesos-tools/riak_mesos/constants.py
+	sed -i "s,^version = .*$$,version = '$(riak-mesos-tools_TAG)',g" $(TOOLS_VERSION_FILE)
+	sed -i "s,\"version\": \".*\",\"version\": \"$(riak-mesos-dcos-repo_TAG)\",g" $(REPO_VERSION_FILE)
 
 .tarball.framework:
 	$(foreach dep,$(shell ls framework), \

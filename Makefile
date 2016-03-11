@@ -26,10 +26,10 @@ REPO_VERSION_FILE             ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/pac
 
 .PHONY: all deps clean updatehead
 
-all: deps update-head tarball update-tools
-dev: deps tarball update-tools
+all: deps update-head tarball config
+dev: deps tarball config
 
-update-tools:
+.config.packages:
 	cp $(TOOLS_TEMPLATE) $(TOOLS_REMOTE)
 	cp $(TOOLS_TEMPLATE) $(TOOLS_LOCAL)
 	cp $(REPO_TEMPLATE) $(REPO_REMOTE)
@@ -48,8 +48,17 @@ update-tools:
 	sed -i "s,{{explorer_url}},$(shell cat $(BASE_DIR)/framework/riak_explorer/packages/remote.txt),g" $(TOOLS_REMOTE)
 	sed -i "s,{{explorer_url}},$(shell cat $(BASE_DIR)/framework/riak_explorer/packages/local.txt),g" $(TOOLS_LOCAL)
 	sed -i "s,{{explorer_url}},$(shell cat $(BASE_DIR)/framework/riak_explorer/packages/remote.txt),g" $(REPO_REMOTE)
+	touch .config.packages
+.config.version:
 	sed -i "s,^version = .*$$,version = '$(riak-mesos-tools_TAG)',g" $(TOOLS_VERSION_FILE)
 	sed -i "s,\"version\": \".*\",\"version\": \"$(riak-mesos-dcos-repo_TAG)\",g" $(REPO_VERSION_FILE)
+	cd tools/riak-mesos-dcos-repo/scripts && \
+			./0-validate-version.sh && \
+			./1-validate-packages.sh && \
+			./2-build-index.sh && \
+			./3-validate-index.sh
+	touch .config.version
+config: .config.packages .config.version
 
 .tarball.framework:
 	$(foreach dep,$(shell ls framework), \
@@ -80,6 +89,8 @@ tarball: .tarball.framework .tarball.riak
 	touch .deps.riak
 deps: .deps.submodules .deps.framework .deps.tools .deps.riak
 
+clean-config:
+	-rm .config.*
 clean-submodules:
 	-rm .deps.submodules
 clean-framework:
@@ -93,7 +104,7 @@ clean-riak:
 	-rm .tarball.riak .deps.riak
 	-rm -rf riak/$(RIAK_SOURCE_DIR)/deps/*
 	cd riak && $(MAKE) clean && 
-clean: clean-submodules clean-framework clean-tools clean-riak
+clean: clean-config clean-submodules clean-framework clean-tools clean-riak
 
 update-head:
 	$(foreach dep,$(shell ls framework), \

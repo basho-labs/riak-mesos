@@ -6,3 +6,4 @@ provision.sh
 .vagrant
 .deps.*
 .tarball.*
+.config.*

@@ -1,6 +1,6 @@
 BASE_DIR                    = $(PWD)
-riak-mesos-scheduler_TAG   ?= 0.0.1
-riak-mesos-executor_TAG    ?= 0.1.2
+riak-mesos-scheduler_TAG   ?= 0.1.0
+riak-mesos-executor_TAG    ?= 0.2.0
 riak-mesos-director_TAG    ?= 0.3.1
 riak_explorer_TAG          ?= 0.1.1-patch
 riak-mesos-tools_TAG       ?= 0.4.0

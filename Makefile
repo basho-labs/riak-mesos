@@ -103,7 +103,7 @@ clean-framework:
 		cd $(BASE_DIR)/framework/$(dep) && \
 			$(MAKE) clean && rm -rf deps/* && rm -rf ebin/*.beam && git reset --hard HEAD;)
 clean-tools:
-	-rm .deps.framework
+	-rm .deps.tools
 clean-riak:
 	-rm .tarball.riak .deps.riak
 	-rm -rf riak/$(RIAK_SOURCE_DIR)/deps/*

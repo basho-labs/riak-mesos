@@ -23,6 +23,8 @@ REPO_TEMPLATE                 ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/pac
 REPO_REMOTE                   ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/config.json
 TOOLS_VERSION_FILE            ?= $(BASE_DIR)/tools/riak-mesos-tools/riak_mesos/constants.py
 REPO_VERSION_FILE             ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/package.json
+REPO_CMD_TEMPLATE             ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/command.template.json
+REPO_CMD_FILE                 ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/command.json
 
 .PHONY: all deps clean updatehead
 
@@ -42,16 +44,18 @@ dev: deps tarball config
 	sed -i "s,{{node_url}},$(shell cat $(BASE_DIR)/riak/packages/remote.txt),g" $(TOOLS_REMOTE)
 	sed -i "s,{{node_url}},$(shell cat $(BASE_DIR)/riak/packages/local.txt),g" $(TOOLS_LOCAL)
 	sed -i "s,{{node_url}},$(shell cat $(BASE_DIR)/riak/packages/remote.txt),g" $(REPO_REMOTE)
-	sed -i "s,{{proxy_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/remote.txt),g" $(TOOLS_REMOTE)
-	sed -i "s,{{proxy_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/local.txt),g" $(TOOLS_LOCAL)
-	sed -i "s,{{proxy_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/remote.txt),g" $(REPO_REMOTE)
+	sed -i "s,{{director_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/remote.txt),g" $(TOOLS_REMOTE)
+	sed -i "s,{{director_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/local.txt),g" $(TOOLS_LOCAL)
+	sed -i "s,{{director_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/remote.txt),g" $(REPO_REMOTE)
 	sed -i "s,{{explorer_url}},$(shell cat $(BASE_DIR)/framework/riak_explorer/packages/remote.txt),g" $(TOOLS_REMOTE)
 	sed -i "s,{{explorer_url}},$(shell cat $(BASE_DIR)/framework/riak_explorer/packages/local.txt),g" $(TOOLS_LOCAL)
 	sed -i "s,{{explorer_url}},$(shell cat $(BASE_DIR)/framework/riak_explorer/packages/remote.txt),g" $(REPO_REMOTE)
 	touch .config.packages
 .config.version:
+	cp $(REPO_CMD_TEMPLATE) $(REPO_CMD_FILE)
 	sed -i "s,^version = .*$$,version = '$(riak-mesos-tools_TAG)',g" $(TOOLS_VERSION_FILE)
 	sed -i "s,\"version\": \".*\",\"version\": \"$(riak-mesos-dcos-repo_TAG)\",g" $(REPO_VERSION_FILE)
+	sed -i "s,{{tools_version}},$(riak-mesos-tools_TAG),g" $(REPO_CMD_FILE)
 	cd tools/riak-mesos-dcos-repo/scripts && \
 			./0-validate-version.sh && \
 			./1-validate-packages.sh && \
@@ -103,7 +107,7 @@ clean-tools:
 clean-riak:
 	-rm .tarball.riak .deps.riak
 	-rm -rf riak/$(RIAK_SOURCE_DIR)/deps/*
-	cd riak && $(MAKE) clean && 
+	cd riak && $(MAKE) clean
 clean: clean-config clean-submodules clean-framework clean-tools clean-riak
 
 update-head:

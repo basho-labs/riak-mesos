@@ -5,13 +5,7 @@ Top-level application forming the erlang-based Mesos Framework for running Riak
 ## Development Build
 
 ```
-env riak-mesos-scheduler_TAG=master \
-    riak-mesos-executor_TAG=master \
-    riak-mesos-director_TAG=master \
-    riak_explorer_TAG=riak-addon-master \
-    riak-mesos-tools_TAG=master \
-    riak-mesos-dcos-repo_TAG=master \
-    make
+make dev
 ```
 
 Test with `riak-mesos-tools`:

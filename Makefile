@@ -26,7 +26,7 @@ REPO_VERSION_FILE             ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/pac
 REPO_CMD_TEMPLATE             ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/command.template.json
 REPO_CMD_FILE                 ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/command.json
 
-.PHONY: all deps clean updatehead
+.PHONY: all deps clean update-head
 
 all: deps update-head tarball config
 dev: deps tarball config

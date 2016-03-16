@@ -11,7 +11,7 @@ make dev
 Test with `riak-mesos-tools`:
 
 ```
-make update-tools
+make config
 cd tools/riak-mesos-tools
 mkdir -p /etc/riak-mesos
 cp config/config.local.json /etc/riak-mesos/config.json

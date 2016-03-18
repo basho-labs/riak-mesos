@@ -4,6 +4,4 @@ riak/root
 Vagrantfile
 provision.sh
 .vagrant
-.deps.*
 .tarball.*
-.config.*

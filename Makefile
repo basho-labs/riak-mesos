@@ -10,7 +10,7 @@ export RIAK_SOURCE_DIR        ?= riak
 export ARCH                   ?= amd64
 export OSNAME                 ?= ubuntu
 export OSVERSION              ?= trusty
-riak-mesos-scheduler_BRANCH   ?= master
+riak-mesos-scheduler_BRANCH   ?= mtc-run-executor
 riak-mesos-executor_BRANCH    ?= master
 riak-mesos-director_BRANCH    ?= master
 riak_explorer_BRANCH          ?= riak-addon-master
@@ -78,7 +78,7 @@ config: .config.packages .config.version
 .tarball.framework: .tarball.riak-mesos-scheduler .tarball.riak-mesos-executor .tarball.riak-mesos-director .tarball.riak_explorer
 .tarball.riak:
 	cd $(BASE_DIR)/riak && $(MAKE) tarball && \
-	touch .tarball.riak
+	touch ../.tarball.riak
 tarball: .tarball.framework .tarball.riak
 
 .deps.submodules:

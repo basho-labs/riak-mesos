@@ -1,7 +1,8 @@
 [{
-  "id": "mesos-dns",
-  "cmd": "sudo  /usr/local/mesos-dns/mesos-dns -config=/vagrant/vagrant/mesos-dns-config.json",
-  "cpus": 0.1,
-  "instances": 1,
-  "mem": 128
+    "id": "mesos-dns",
+    "cmd": "/usr/local/mesos-dns/mesos-dns -config=/vagrant/vagrant/mesos-dns-config.json",
+    "user": "root",
+    "cpus": 0.1,
+    "instances": 1,
+    "mem": 128
 }]

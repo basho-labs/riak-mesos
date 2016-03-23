@@ -1,7 +1,5 @@
 riak/packages
 riak/root
 .projectile
-Vagrantfile
-provision.sh
 .vagrant
 .tarball.*

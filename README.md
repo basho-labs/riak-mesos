@@ -13,13 +13,15 @@ Test with `riak-mesos-tools`:
 ```
 make config
 cd tools/riak-mesos-tools
-mkdir -p /etc/riak-mesos
+sudo mkdir -p /etc/riak-mesos
+sudo chown -R vagrant:vagrant /etc/riak-mesos
 cp config/config.local.json /etc/riak-mesos/config.json
 make env
 source env/bin/activate
 riak-mesos framework install
 riak-mesos cluster list
 riak-mesos cluster create
+riak-mesos node add
 ```
 
 ## Release Build

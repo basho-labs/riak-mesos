@@ -34,7 +34,9 @@ cd /vagrant
 make dev
 ```
 
-### Github SSH Notes:
+After running those commands successfully, continue with the testing procedure in: [https://github.com/basho-labs/riak-mesos-erlang/#development-build](https://github.com/basho-labs/riak-mesos-erlang/#development-build)
+
+### Github SSH Key Notes:
 
 Here are the steps I took to get Github keys set up:
 

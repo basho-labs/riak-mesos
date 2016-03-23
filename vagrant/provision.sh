@@ -42,15 +42,11 @@ service mesos-slave restart
 service mesos-master restart
 service marathon restart
 
-apt-get -y update
-apt-get -y upgrade
 apt-get -y install git s3cmd zip python-pip
 pip install jsonschema
 pip install virtualenv
 
 # Install Erlang
-apt-get -y update
-apt-get -y upgrade
 apt-get -y install libncurses5-dev libpam0g-dev
 apt-get install -y build-essential autoconf libncurses5-dev openssl libssl-dev fop xsltproc unixodbc-dev libpam0g-dev maven
 mkdir -p $HOME/bin

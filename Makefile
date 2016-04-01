@@ -10,7 +10,7 @@ export RIAK_SOURCE_DIR        ?= riak
 export ARCH                   ?= amd64
 export OSNAME                 ?= ubuntu
 export OSVERSION              ?= trusty
-riak-mesos-scheduler_BRANCH   ?= master
+riak-mesos-scheduler_BRANCH   ?= ack-constraints
 riak-mesos-executor_BRANCH    ?= master
 riak-mesos-director_BRANCH    ?= master
 riak_explorer_BRANCH          ?= riak-addon-master
@@ -98,7 +98,7 @@ tarball: .tarball.framework .tarball.riak
 deps: .deps.submodules .deps.framework .deps.tools .deps.riak
 
 clean-framework:
-	-rm .tarball.framework
+	-rm .tarball.riak-mesos-scheduler .tarball.riak-mesos-executor .tarball.riak-mesos-director .tarball.riak_explorer
 	$(foreach dep,$(shell ls framework), \
 		cd $(BASE_DIR)/framework/$(dep) && \
 			$(MAKE) clean && rm -rf deps/* && rm -rf ebin/*.beam && git reset --hard HEAD;)
@@ -106,7 +106,7 @@ clean-riak:
 	-rm .tarball.riak
 	-rm -rf riak/$(RIAK_SOURCE_DIR)/deps/*
 	cd riak && $(MAKE) clean
-clean: clean-framework clean-riak
+clean: clean-framework
 
 update-head:
 	$(foreach dep,$(shell ls framework), \

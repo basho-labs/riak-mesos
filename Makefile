@@ -10,7 +10,7 @@ export RIAK_SOURCE_DIR        ?= riak
 export ARCH                   ?= amd64
 export OSNAME                 ?= ubuntu
 export OSVERSION              ?= trusty
-riak-mesos-scheduler_BRANCH   ?= ack-constraints
+riak-mesos-scheduler_BRANCH   ?= master
 riak-mesos-executor_BRANCH    ?= master
 riak-mesos-director_BRANCH    ?= master
 riak_explorer_BRANCH          ?= riak-addon-master
@@ -111,14 +111,14 @@ clean: clean-framework
 update-head:
 	$(foreach dep,$(shell ls framework), \
 		cd $(BASE_DIR)/framework/$(dep) && \
-			git fetch -q origin $($(dep)_TAG) && git checkout -q $($(dep)_TAG);) && \
+			git fetch -q origin $($(dep)_TAG) && git checkout -q $($(dep)_TAG);)
 	$(foreach dep,$(shell ls tools), \
 		cd $(BASE_DIR)/tools/$(dep) && \
-			git fetch -q origin $($(dep)_TAG) && git checkout -q $($(dep)_TAG);) && \
+			git fetch -q origin $($(dep)_TAG) && git checkout -q $($(dep)_TAG);)
 	cd $(BASE_DIR)/riak/$(RIAK_SOURCE_DIR) && \
 		git fetch -q origin $(RIAK_TAG) && git checkout -q $(RIAK_TAG)
 
 sync:
 	$(foreach dep,$(shell ls framework), \
-		cd $(BASE_DIR)/framework/$(dep) && $(MAKE) sync;) && \
+		cd $(BASE_DIR)/framework/$(dep) && $(MAKE) sync;)
 	cd $(BASE_DIR)/riak && make sync

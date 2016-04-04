@@ -14,7 +14,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     override.vm.network :forwarded_port, guest: 5051, host: 5051 # Mesos Agent
     override.vm.network :forwarded_port, guest: 8080, host: 8080 # Marathon
     override.vm.network :forwarded_port, guest: 2181, host: 2181 # Zookeeper
-    override.vm.network :forwarded_port, guest: 9000, host: 9000 # Riak Explorer / Riak Director
+    # override.vm.network :forwarded_port, guest: 9000, host: 9000 # Riak Explorer / Riak Director
     override.vm.network :forwarded_port, guest: 9090, host: 9090 # Riak Mesos Scheduler
     override.vm.network :forwarded_port, guest: 8098, host: 8098 # Riak HTTP
     override.vm.network :forwarded_port, guest: 8087, host: 8087 # Riak PB

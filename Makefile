@@ -62,7 +62,6 @@ dev: deps tarball config
 			./3-validate-index.sh
 config: .config.packages .config.version
 
-
 .tarball.riak-mesos-scheduler:
 	cd $(BASE_DIR)/framework/riak-mesos-scheduler && $(MAKE) tarball && \
 	touch ../../.tarball.riak-mesos-scheduler

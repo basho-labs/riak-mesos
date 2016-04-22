@@ -3,3 +3,4 @@ riak/root
 .projectile
 .vagrant
 .tarball.*
+oauth.txt

@@ -1,5 +1,5 @@
 BASE_DIR                       = $(PWD)
-riak-mesos-scheduler_TAG      ?= 0.2.0
+riak-mesos-scheduler_TAG      ?= 1.0-alpha2
 riak-mesos-executor_TAG       ?= 1.0-alpha2
 riak-mesos-director_TAG       ?= 0.3.2
 riak_explorer_TAG             ?= 0.2.0
@@ -10,7 +10,7 @@ export RIAK_SOURCE_DIR        ?= riak
 export ARCH                   ?= amd64
 export OS_FAMILY                 ?= ubuntu
 export OS_VERSION              ?= trusty
-riak-mesos-scheduler_BRANCH   ?= master
+riak-mesos-scheduler_BRANCH   ?= mtc-tag-deps
 riak-mesos-executor_BRANCH    ?= mtc-tag-deps
 riak-mesos-director_BRANCH    ?= master
 riak_explorer_BRANCH          ?= master

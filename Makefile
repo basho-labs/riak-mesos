@@ -1,15 +1,15 @@
 BASE_DIR                       = $(PWD)
-riak-mesos-scheduler_TAG      ?= 0.2.0
-riak-mesos-executor_TAG       ?= 0.2.1
-riak-mesos-director_TAG       ?= 0.3.2
-riak_explorer_TAG             ?= 0.2.0
-riak-mesos-tools_TAG          ?= 0.4-stable
+riak-mesos-scheduler_TAG      ?= 1.0-rc1
+riak-mesos-executor_TAG       ?= 1.0-rc1
+riak-mesos-director_TAG       ?= 1.0-rc1
+riak_explorer_TAG             ?= 0.3.0
+riak-mesos-tools_TAG          ?= 1.0-rc1
 riak-mesos-dcos-repo_TAG      ?= 0.4-stable
 export RIAK_TAG               ?= riak-2.1.3
 export RIAK_SOURCE_DIR        ?= riak
 export ARCH                   ?= amd64
 export OS_FAMILY                 ?= ubuntu
-export OS_VERSION              ?= trusty
+export OS_VERSION              ?= 14.04
 riak-mesos-scheduler_BRANCH   ?= master
 riak-mesos-executor_BRANCH    ?= master
 riak-mesos-director_BRANCH    ?= master
@@ -49,7 +49,10 @@ dev: deps tarball config
 	sed -i "s,{{director_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/remote.txt),g" $(REPO_REMOTE) && \
 	sed -i "s,{{explorer_url}},$(shell cat $(BASE_DIR)/framework/riak_explorer/packages/remote.txt),g" $(TOOLS_REMOTE) && \
 	sed -i "s,{{explorer_url}},$(shell cat $(BASE_DIR)/framework/riak_explorer/packages/local.txt),g" $(TOOLS_LOCAL) && \
-	sed -i "s,{{explorer_url}},$(shell cat $(BASE_DIR)/framework/riak_explorer/packages/remote.txt),g" $(REPO_REMOTE)
+	sed -i "s,{{explorer_url}},$(shell cat $(BASE_DIR)/framework/riak_explorer/packages/remote.txt),g" $(REPO_REMOTE) && \
+	sed -i "s,{{patches_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/patches_remote.txt),g" $(TOOLS_REMOTE) && \
+	sed -i "s,{{patches_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/patches_local.txt),g" $(TOOLS_LOCAL) && \
+	sed -i "s,{{patches_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/patches_remote.txt),g" $(REPO_REMOTE)
 .config.version:
 	cp $(REPO_CMD_TEMPLATE) $(REPO_CMD_FILE) && \
 	sed -i "s,^version = .*$$,version = '$(riak-mesos-tools_TAG)',g" $(TOOLS_VERSION_FILE) && \

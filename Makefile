@@ -16,6 +16,8 @@ riak-mesos-director_BRANCH    ?= master
 riak_explorer_BRANCH          ?= master
 riak-mesos-tools_BRANCH       ?= master
 riak-mesos-dcos-repo_BRANCH   ?= master
+DCOS_TEMPLATE                 ?= $(BASE_DIR)/tools/riak-mesos-tools/config/config.dcos.template.json
+DCOS_REMOTE										?= $(BASE_DIR)/tools/riak-mesos-tools/config/config.dcos.json
 TOOLS_TEMPLATE                ?= $(BASE_DIR)/tools/riak-mesos-tools/config/config.template.json
 TOOLS_REMOTE                  ?= $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json
 TOOLS_LOCAL                   ?= $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json
@@ -35,24 +37,41 @@ dev: deps tarball config
 	cp $(TOOLS_TEMPLATE) $(TOOLS_REMOTE) && \
 	cp $(TOOLS_TEMPLATE) $(TOOLS_LOCAL) && \
 	cp $(REPO_TEMPLATE) $(REPO_REMOTE) && \
+	cp $(DCOS_TEMPLATE) $(DCOS_REMOTE) && \
 	sed -i "s,{{scheduler_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-scheduler/packages/remote.txt),g" $(TOOLS_REMOTE) && \
 	sed -i "s,{{scheduler_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-scheduler/packages/local.txt),g" $(TOOLS_LOCAL) && \
 	sed -i "s,{{scheduler_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-scheduler/packages/remote.txt),g" $(REPO_REMOTE) && \
+	sed -i "s,{{scheduler_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-scheduler/packages/remote.txt),g" $(DCOS_REMOTE) && \
 	sed -i "s,{{executor_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/remote.txt),g" $(TOOLS_REMOTE) && \
 	sed -i "s,{{executor_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/local.txt),g" $(TOOLS_LOCAL) && \
 	sed -i "s,{{executor_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/remote.txt),g" $(REPO_REMOTE) && \
+	sed -i "s,{{executor_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/remote.txt),g" $(DCOS_REMOTE) && \
 	sed -i "s,{{node_url}},$(shell cat $(BASE_DIR)/riak/packages/remote.txt),g" $(TOOLS_REMOTE) && \
 	sed -i "s,{{node_url}},$(shell cat $(BASE_DIR)/riak/packages/local.txt),g" $(TOOLS_LOCAL) && \
 	sed -i "s,{{node_url}},$(shell cat $(BASE_DIR)/riak/packages/remote.txt),g" $(REPO_REMOTE) && \
+	sed -i "s,{{node_url}},$(shell cat $(BASE_DIR)/riak/packages/remote.txt),g" $(DCOS_REMOTE) && \
 	sed -i "s,{{director_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/remote.txt),g" $(TOOLS_REMOTE) && \
 	sed -i "s,{{director_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/local.txt),g" $(TOOLS_LOCAL) && \
 	sed -i "s,{{director_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/remote.txt),g" $(REPO_REMOTE) && \
+	sed -i "s,{{director_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/remote.txt),g" $(DCOS_REMOTE) && \
 	sed -i "s,{{explorer_url}},$(shell cat $(BASE_DIR)/framework/riak_explorer/packages/remote.txt),g" $(TOOLS_REMOTE) && \
 	sed -i "s,{{explorer_url}},$(shell cat $(BASE_DIR)/framework/riak_explorer/packages/local.txt),g" $(TOOLS_LOCAL) && \
 	sed -i "s,{{explorer_url}},$(shell cat $(BASE_DIR)/framework/riak_explorer/packages/remote.txt),g" $(REPO_REMOTE) && \
+	sed -i "s,{{explorer_url}},$(shell cat $(BASE_DIR)/framework/riak_explorer/packages/remote.txt),g" $(DCOS_REMOTE) && \
 	sed -i "s,{{patches_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/patches_remote.txt),g" $(TOOLS_REMOTE) && \
 	sed -i "s,{{patches_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/patches_local.txt),g" $(TOOLS_LOCAL) && \
-	sed -i "s,{{patches_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/patches_remote.txt),g" $(REPO_REMOTE)
+	sed -i "s,{{patches_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/patches_remote.txt),g" $(REPO_REMOTE) && \
+	sed -i "s,{{patches_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/patches_remote.txt),g" $(DCOS_REMOTE) && \
+	sed -i "s,{{patches_package}},$(shell basename $(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/patches_local.txt)),g" $(REPO_REMOTE) && \
+	sed -i "s,{{patches_package}},$(shell basename $(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/patches_local.txt)),g" $(DCOS_REMOTE) && \
+	sed -i "s,{{explorer_package}},$(shell basename $(shell cat $(BASE_DIR)/framework/riak_explorer/packages/local.txt)),g" $(REPO_REMOTE) && \
+	sed -i "s,{{explorer_package}},$(shell basename $(shell cat $(BASE_DIR)/framework/riak_explorer/packages/local.txt)),g" $(DCOS_REMOTE) && \
+	sed -i "s,{{node_package}},$(shell basename $(shell cat $(BASE_DIR)/riak/packages/local.txt)),g" $(REPO_REMOTE) && \
+	sed -i "s,{{node_package}},$(shell basename $(shell cat $(BASE_DIR)/riak/packages/local.txt)),g" $(DCOS_REMOTE) && \
+	sed -i "s,{{executor_package}},$(shell basename $(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/local.txt)),g" $(REPO_REMOTE) && \
+	sed -i "s,{{executor_package}},$(shell basename $(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/local.txt)),g" $(DCOS_REMOTE) && \
+	sed -i "s,{{scheduler_package}},$(shell basename $(shell cat $(BASE_DIR)/framework/riak-mesos-scheduler/packages/local.txt)),g" $(REPO_REMOTE) && \
+	sed -i "s,{{scheduler_package}},$(shell basename $(shell cat $(BASE_DIR)/framework/riak-mesos-scheduler/packages/local.txt)),g" $(DCOS_REMOTE)
 .config.version:
 	cp $(REPO_CMD_TEMPLATE) $(REPO_CMD_FILE) && \
 	sed -i "s,^version = .*$$,version = '$(riak-mesos-tools_TAG)',g" $(TOOLS_VERSION_FILE) && \

@@ -64,14 +64,16 @@ TARGET_ERL=R16B02_basho10
     [ -f "$KERL_DIR/kerl" ] && ln -nsf "$KERL_DIR/kerl" "$HOME/bin/kerl"
     )
 
+# TODO Add KERL_BUILD_DOCS=yes KERL_INSTALL_MANPAGES=yes
+# Once the bug for non-standard version nrs in kerl 1.1.1 is snuffed out
 [ ! -f "$HOME/.kerlrc" ] && cat > ~/.kerlrc << _KERLRC
 export KERL_BUILD_BACKEND=git
-export KERL_BUILD_DOCS=yes
-export KERL_INSTALL_HTMLDOCS=yes
+export OTP_GITHUB_URL="https://github.com/basho/otp"
 _KERLRC
 
 # Only attempt to run kerl if it's in $PATH
 [ $(which kerl) ] && (
+    # kerl 1.1.1 has a bug where OTP_GITHUB_URL doesn't get picked up from .kerlrc
     export OTP_GITHUB_URL="https://github.com/basho/otp"
     kerl update releases
     [ $(kerl list builds | grep -c "$TARGET_ERL") -eq 0 ] && kerl build "$TARGET_ERL" "$TARGET_ERL"

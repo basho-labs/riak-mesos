@@ -1,10 +1,10 @@
 BASE_DIR                       = $(PWD)
-riak-mesos-scheduler_TAG      ?= 1.0-rc1
-riak-mesos-executor_TAG       ?= 1.0-rc1
+riak-mesos-scheduler_TAG      ?= 1.0-rc2
+riak-mesos-executor_TAG       ?= 1.0-rc2
 riak-mesos-director_TAG       ?= 1.0-rc1
 riak_explorer_TAG             ?= 0.3.0
-riak-mesos-tools_TAG          ?= 1.0-rc1
-riak-mesos-dcos-repo_TAG      ?= 0.4-stable
+riak-mesos-tools_TAG          ?= 1.0-rc2
+riak-mesos-dcos-repo_TAG      ?= 1.0-rc2
 export RIAK_TAG               ?= riak-2.1.3
 export RIAK_SOURCE_DIR        ?= riak
 export ARCH                   ?= amd64

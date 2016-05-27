@@ -50,15 +50,28 @@ pip install virtualenv
 apt-get -y install libncurses5-dev libpam0g-dev
 apt-get install -y build-essential autoconf libncurses5-dev openssl libssl-dev fop xsltproc unixodbc-dev libpam0g-dev maven
 mkdir -p $HOME/bin
+export PATH="$PATH:$HOME/bin"
 cd $HOME/bin
-curl -O https://raw.githubusercontent.com/spawngrid/kerl/master/kerl
-chmod a+x kerl
-./kerl build git git://github.com/basho/otp.git OTP_R16B02_basho8 R16B02-basho8
-./kerl install R16B02-basho8 ~/erlang/R16B02-basho8
-. ~/erlang/R16B02-basho8/activate
+curl -L -O https://github.com/kerl/kerl/archive/1.1.1.tar.gz
+tar zxf 1.1.1.tar.gz
 
+cat > ~/.kerlrc << _KERLRC
+export KERL_BUILD_BACKEND=git
+export KERL_BUILD_DOCS=yes
+export KERL_INSTALL_HTMLDOCS=yes
+_KERLRC
+
+ln -nsf kerl-1.1.1/kerl
+export OTP_GITHUB_URL=https://github.com/basho/otp
+kerl update releases
+kerl build R16B02_basho10 R16B02_basho10
+kerl install R16B02-basho10 ~/erlang/R16B02-basho10
+. ~/erlang/R16B02-basho10/activate
+
+echo '# kerl completion' >> $HOME/.bashrc
+echo '[ -f "$HOME/bin/kerl-1.1.1/bash_completion/kerl" ] && . $HOME/bin/kerl-1.1.1/bash_completion/kerl' >> $HOME/.bashrc
 echo '# Erlang' >> $HOME/.bashrc
-echo '. $HOME/erlang/R16B02-basho8/activate' >> $HOME/.bashrc
+echo '. $HOME/erlang/R16B02-basho10/activate' >> $HOME/.bashrc
 echo 'export PATH=$PATH:$HOME/bin' >> $HOME/.bashrc
 
 # Fix permissions

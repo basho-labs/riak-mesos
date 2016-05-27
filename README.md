@@ -2,13 +2,12 @@
 
 An [Apache Mesos](http://mesos.apache.org/) framework for [Riak TS](http://basho.com/products/riak-ts) and [Riak KV](http://basho.com/products/riak-kv/), a distributed NoSQL key-value data store that offers high availability, fault tolerance, operational simplicity, and scalability.
 
-**Note:** This project is an early proof of concept. The code is a beta release and there may be bugs, incomplete features, incorrect documentation or other discrepancies.
 
 ## Installation
 
 Please refer to the documentation in [riak-mesos-tools](https://github.com/basho-labs/riak-mesos-tools) for information about installation and usage of the Riak Mesos Framework.
 
-# TODO Build
+## Build
 
 For build and testing information, visit [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
@@ -20,7 +19,7 @@ The Riak Mesos Framework is typically deployed as a marathon app via a CLI tool 
 
 ### Scheduler
 
-The RMF Scheduler is written in erlang, using the mesos-master HTTP API. It maintains the current cluster configuration in Zookeeper (providing resilience against Scheduler failure/restart), and ensures the running cluster topology matches the configuration at all times. The Scheduler provides an HTTP API to mutate the cluster configuration, as well as running a copy of [Riak Explorer](https://github.com/basho-labs/riak_explorer) to monitor the cluster.
+The RMF Scheduler uses the mesos-master HTTP API. It maintains the current cluster configuration in Zookeeper (providing resilience against Scheduler failure/restart), and ensures the running cluster topology matches the configuration at all times. The Scheduler provides an HTTP API to mutate the cluster configuration, as well as running a copy of [Riak Explorer](https://github.com/basho-labs/riak_explorer) to monitor the cluster.
 
 #### Resourcing
 
@@ -37,7 +36,7 @@ The RMF Executor takes care of configuring and running a Riak node and a complem
 
 #### Inter-node Communication
 
-Under normal operation, distributed erlang applications communicate with each other by first connecting on EPMD's default port, then communicating the necessary information for the nodes to connect. In a Mesos environment, however, it is not possible to assume that a specific port is available for use. To enable distributed erlang communication within Mesos, we use [ErlPMD](https://github.com/sanmiguel/erlpmd). ErlPMD listens on a port chosen by the Scheduler from those made available by Mesos and coordinates the ports each node can be reached at by storing it in Zookeeper.
+Under normal operation, riak nodes communicate with each other by first connecting on EPMD's default port, then communicating the necessary information for the nodes to connect. In a Mesos environment, however, it is not possible to assume that a specific port is available for use. To enable inter-riak-node communication within Mesos, we use [ErlPMD](https://github.com/sanmiguel/erlpmd). ErlPMD listens on a port chosen by the Scheduler from those made available by Mesos and coordinates the ports each node can be reached at by storing it in Zookeeper.
 
 # Fault Tolerance #
 

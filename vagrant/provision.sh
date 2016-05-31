@@ -46,23 +46,63 @@ apt-get -y install git s3cmd zip python-pip
 pip install jsonschema
 pip install virtualenv
 
-# Install Erlang
+# Install kerl, Erlang
 apt-get -y install libncurses5-dev libpam0g-dev
 apt-get install -y build-essential autoconf libncurses5-dev openssl libssl-dev fop xsltproc unixodbc-dev libpam0g-dev maven
-mkdir -p $HOME/bin
-cd $HOME/bin
-curl -O https://raw.githubusercontent.com/spawngrid/kerl/master/kerl
-chmod a+x kerl
-./kerl build git git://github.com/basho/otp.git OTP_R16B02_basho8 R16B02-basho8
-./kerl install R16B02-basho8 ~/erlang/R16B02-basho8
-. ~/erlang/R16B02-basho8/activate
 
-echo '# Erlang' >> $HOME/.bashrc
-echo '. $HOME/erlang/R16B02-basho8/activate' >> $HOME/.bashrc
-echo 'export PATH=$PATH:$HOME/bin' >> $HOME/.bashrc
+mkdir -p $HOME/bin
+export PATH="$PATH:$HOME/bin"
+cd $HOME/bin
+
+# BEGIN Kerl setup
+KERL_VSN="1.1.1"
+KERL_DIR="$HOME/bin/kerl-$KERL_VSN"
+TARGET_ERL=R16B02_basho10
+[ ! -d "kerl-$KERL_VSN" ] && (
+    curl -L -O https://github.com/kerl/kerl/archive/$KERL_VSN.tar.gz
+    tar zxf $KERL_VSN.tar.gz && rm $KERL_VSN.tar.gz
+    [ -f "$KERL_DIR/kerl" ] && ln -nsf "$KERL_DIR/kerl" "$HOME/bin/kerl"
+    )
+
+# TODO Add KERL_BUILD_DOCS=yes KERL_INSTALL_MANPAGES=yes
+# Once the bug for non-standard version nrs in kerl 1.1.1 is snuffed out
+[ ! -f "$HOME/.kerlrc" ] && cat > ~/.kerlrc << _KERLRC
+export KERL_BUILD_BACKEND=git
+export OTP_GITHUB_URL="https://github.com/basho/otp"
+_KERLRC
+
+# Only attempt to run kerl if it's in $PATH
+[ $(which kerl) ] && (
+    # kerl 1.1.1 has a bug where OTP_GITHUB_URL doesn't get picked up from .kerlrc
+    export OTP_GITHUB_URL="https://github.com/basho/otp"
+    kerl update releases
+    [ $(kerl list builds | grep -c "$TARGET_ERL") -eq 0 ] && kerl build "$TARGET_ERL" "$TARGET_ERL"
+    [ $(kerl list installations | grep -c "$TARGET_ERL") -eq 0 ] && kerl install "$TARGET_ERL" "~/erlang/$TARGET_ERL"
+    ) || echo "ERROR: kerl was not installed"
+
+[ $(grep -c '#kerl_completion' "$HOME/.bashrc") -eq 0 ] && (
+    echo '#kerl_completion' >> "$HOME/.bashrc"
+    echo "[ -f \"$KERL_DIR/bash_completion/kerl\" ] && . \"$KERL_DIR/bash_completion/kerl\"" >> $HOME/.bashrc
+)
+
+[ $(grep -c '#Erlang_activate' "$HOME/.bashrc") -eq 0 ] && (
+    echo "#Erlang_activate" >> "$HOME/.bashrc"
+    echo ". \$HOME/erlang/$TARGET_ERL/activate" >> "$HOME/.bashrc"
+    echo 'export PATH=$PATH:$HOME/bin' >> "$HOME/.bashrc"
+)
+
+[ -f "~/erlang/$TARGET_ERL/activate" ] && . "~/erlang/$TARGET_ERL/activate"
+# END Kerl setup
 
 # Fix permissions
 chown -R vagrant:vagrant $HOME
 
 # Launch Mesos DNS
 curl -v -XPUT -H 'Content-Type: application/json' http://localhost:8080/v2/apps -d @/vagrant/vagrant/mesos-dns-marathon.json
+
+# Install riak-mesos-tools as 'riak-mesos'
+# NB To reinstall after making changes to /vagrant/tools/riak-mesos-tools, use:
+# $ sudo pip install --upgrade git+file:///vagrant/tools/riak-mesos-tools#egg=riak_mesos
+# You will need to commit your changes locally.
+sudo pip install git+file:///vagrant/tools/riak-mesos-tools#egg=riak_mesos
+# TODO It would be nice to do this without sudo - install to somewhere inside $HOME/bin/ perhaps?

@@ -20,6 +20,7 @@ update-java-alternatives -s /usr/lib/jvm/java-1.8.0-openjdk-amd64
 apt-get -y install libprotobuf-dev protobuf-compiler
 apt-get -y install marathon
 apt-get -y install mesos=0.26.0-0.2.145.ubuntu1404
+apt-mark hold mesos
 apt-get -y install lxc-docker
 apt-get -y install resolvconf
 

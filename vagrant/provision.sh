@@ -66,7 +66,7 @@ TARGET_ERL=R16B02_basho10
 
 # TODO Add KERL_BUILD_DOCS=yes KERL_INSTALL_MANPAGES=yes
 # Once the bug for non-standard version nrs in kerl 1.1.1 is snuffed out
-[ ! -f "$HOME/.kerlrc" ] && cat > ~/.kerlrc << _KERLRC
+[ ! -f "$HOME/.kerlrc" ] && cat > $HOME/.kerlrc << _KERLRC
 export KERL_BUILD_BACKEND=git
 export OTP_GITHUB_URL="https://github.com/basho/otp"
 _KERLRC
@@ -77,7 +77,7 @@ _KERLRC
     export OTP_GITHUB_URL="https://github.com/basho/otp"
     kerl update releases
     [ $(kerl list builds | grep -c "$TARGET_ERL") -eq 0 ] && kerl build "$TARGET_ERL" "$TARGET_ERL"
-    [ $(kerl list installations | grep -c "$TARGET_ERL") -eq 0 ] && kerl install "$TARGET_ERL" "~/erlang/$TARGET_ERL"
+    [ $(kerl list installations | grep -c "$TARGET_ERL") -eq 0 ] && kerl install "$TARGET_ERL" "$HOME/erlang/$TARGET_ERL"
     ) || echo "ERROR: kerl was not installed"
 
 [ $(grep -c '#kerl_completion' "$HOME/.bashrc") -eq 0 ] && (
@@ -91,7 +91,7 @@ _KERLRC
     echo 'export PATH=$PATH:$HOME/bin' >> "$HOME/.bashrc"
 )
 
-[ -f "~/erlang/$TARGET_ERL/activate" ] && . "~/erlang/$TARGET_ERL/activate"
+[ -f "$HOME/erlang/$TARGET_ERL/activate" ] && . "$HOME/erlang/$TARGET_ERL/activate"
 # END Kerl setup
 
 # Fix permissions

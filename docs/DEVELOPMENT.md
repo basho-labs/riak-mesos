@@ -8,21 +8,38 @@ To set it up, within the `riak-mesos-erlang` clone, simply run:
 vagrant up
 ```
 
+To log into the VM, now run:
+
+```
+vagrant ssh
+```
+
+You should now have Mesos and Marathon running on your VM, available as:
+
+ - Mesos: http://ubuntu.local:5050/
+ - Marathon: http://ubuntu.local:8080/
 
 ## Development Build
 
+To build the full framework (including a copy of Riak-KV - see `RIAK_TAG` in Makefile for exactly which version), run:
+
 ```
-make dev
+# Build all RMF packages locally
+# This will take some time to complete as it builds each component
+cd /vagrant/ && make dev
+# Generate the config files
+make config
+cd tools/riak-mesos-tools
+# Make the appropriate directory and install the generated config.json for `riak-mesos`
+sudo mkdir -p /etc/riak-mesos
+sudo chown -R vagrant:vagrant /etc/riak-mesos
+cp config/config.local.json /etc/riak-mesos/config.json
 ```
 
 Test with `riak-mesos-tools`:
 
 ```
-make config
-cd tools/riak-mesos-tools
-sudo mkdir -p /etc/riak-mesos
-sudo chown -R vagrant:vagrant /etc/riak-mesos
-cp config/config.local.json /etc/riak-mesos/config.json
+cd /vagrant/
 make env
 source env/bin/activate
 riak-mesos framework install

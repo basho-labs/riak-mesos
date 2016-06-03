@@ -21,12 +21,12 @@ You should now have Mesos and Marathon running on your VM, available as:
 
 ## Development Build
 
-To build the full framework (including a copy of Riak-KV - see `RIAK_TAG` in Makefile for exactly which version), run:
+To build the full framework (including a copy of Riak-KV - see git submodules for exactly which version), run:
 
 ```
 # Build all RMF packages locally
 # This will take some time to complete as it builds each component
-cd /vagrant/ && make dev
+cd /vagrant/ && make
 # Generate the config files
 make config
 cd tools/riak-mesos-tools

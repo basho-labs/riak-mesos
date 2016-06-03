@@ -1,0 +1,46 @@
+{
+    "riak": {
+        "framework-name": "riak",
+        "hostname": "riak.marathon.mesos",
+        "marathon": "marathon.mesos:8080",
+        "master": "leader.mesos:5050",
+        "zk": "leader.mesos:2181",
+        "user": "root",
+        "role": "riak",
+        "auth-principal": "riak",
+        "auth-provider": "",
+        "auth-secret-file": "",
+        "instances": 1,
+        "failover-timeout": 10000.0,
+        "healthcheck-grace-period-seconds": 300,
+        "healthcheck-interval-seconds": 60,
+        "healthcheck-timeout-seconds": 20,
+        "healthcheck-max-consecutive-failures": 5,
+        "constraints": [],
+        "scheduler": {
+            "url": "https://github.com/basho-labs/riak-mesos-scheduler/releases/download/1.0-rc2/riak_mesos_scheduler-1.0.rc2-ubuntu-14.04-amd64.tar.gz",
+            "cpus": 0.5,
+            "mem": 256.0,
+            "constraints": [["hostname", "UNIQUE"]]
+        },
+        "executor": {
+            "url": "https://github.com/basho-labs/riak-mesos-executor/releases/download/1.0-rc2/riak_mesos_executor-1.0.rc2-ubuntu-14.04-amd64.tar.gz",
+            "cpus": 0.1,
+            "mem": 512.0
+        },
+        "node": {
+            "url": "http://riak-tools.s3.amazonaws.com/riak/2.1/2.1.3/ubuntu/14.04/riak-2.1.3-amd64.tar.gz",
+            "patches-url": "https://github.com/basho-labs/riak-mesos-executor/releases/download/1.0-rc2/riak_erlpmd_patches-1.0.rc2-ubuntu-14.04-amd64.tar.gz",
+            "explorer-url": "https://github.com/basho-labs/riak_explorer/releases/download/0.3.0/riak_explorer-0.3.0.patch-ubuntu-trusty-amd64.tar.gz",
+            "cpus": 0.25,
+            "mem": 512.0,
+            "disk": 1000.0
+        },
+        "director": {
+            "url": "https://github.com/basho-labs/riak-mesos-director/releases/download/1.0-rc1/riak_mesos_director-1.0.rc1-ubuntu-14.04-amd64.tar.gz",
+            "use-public": false,
+            "cpus": 0.5,
+            "mem": 256.0
+        }
+    }
+}

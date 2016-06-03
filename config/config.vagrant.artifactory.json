@@ -21,7 +21,7 @@
             "url": "http://158.85.240.154:31374/artifactory/basho-artifactory-cloud-rmf/ubuntu-14.04/scheduler/1.0-rc2-0.26/riak_mesos_scheduler-1.0.rc2-mesos-0.26-ubuntu-14.04-amd64.tar.gz",
             "cpus": 0.5,
             "mem": 256.0,
-            "constraints": [["hostname", "UNIQUE"]]
+            "constraints": []
         },
         "executor": {
             "url": "http://158.85.240.154:31374/artifactory/basho-artifactory-cloud-rmf/ubuntu-14.04/executor/1.0-rc2-0.26/riak_mesos_executor-1.0.rc2-mesos-0.26-ubuntu-14.04.tar.gz",

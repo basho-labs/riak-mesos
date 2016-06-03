@@ -21,7 +21,7 @@ You should now have Mesos and Marathon running on your VM, available as:
 
 ## Development Build
 
-To build the full framework (including a copy of Riak-KV - see `RIAK_TAG` in Makefile for exactly which version), run:
+To build the full framework (including a copy of Riak-KV - see git submodules for exactly which version), run:
 
 ```
 # Build all RMF packages locally

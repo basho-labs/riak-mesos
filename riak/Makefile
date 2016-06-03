@@ -1,18 +1,18 @@
 BASE_DIR          = $(PWD)
-RIAK_TAG         ?=
-RIAK_SOURCE_DIR  ?= 
+RIAK_TAG         ?= $(shell cd riak && git describe --tags)
+RIAK_SOURCE_DIR  ?= riak
 RIAK_REPO        ?= $(shell echo $(RIAK_TAG) | cut -d'-' -f1)
 RIAK_PKG_VERSION ?= $(shell echo $(RIAK_TAG) | cut -d'-' -f2)
 MAJOR            ?= $(shell echo $(RIAK_PKG_VERSION) | cut -d'.' -f1)
 MINOR            ?= $(shell echo $(RIAK_PKG_VERSION) | cut -d'.' -f2)
 ARCH             ?= amd64
-OS_FAMILY           ?= ubuntu
-OS_VERSION        ?= 14.04
-S3_BASE         ?= riak-tools
-S3_PREFIX       ?= http://$(S3_BASE).s3.amazonaws.com/
-DEPLOY_BASE     ?= $(RIAK_REPO)/$(MAJOR).$(MINOR)/$(RIAK_PKG_VERSION)/$(OS_FAMILY)/$(OS_VERSION)/
-PKGNAME         ?= $(RIAK_REPO)-$(RIAK_PKG_VERSION)-$(ARCH).tar.gz
-RIAK_BASE       ?= root
+OS_FAMILY        ?= ubuntu
+OS_VERSION       ?= 14.04
+S3_BASE          ?= riak-tools
+S3_PREFIX        ?= http://$(S3_BASE).s3.amazonaws.com/
+DEPLOY_BASE      ?= $(RIAK_REPO)/$(MAJOR).$(MINOR)/$(RIAK_PKG_VERSION)/$(OS_FAMILY)/$(OS_VERSION)/
+PKGNAME          ?= $(RIAK_REPO)-$(RIAK_PKG_VERSION)-$(ARCH).tar.gz
+RIAK_BASE        ?= root
 
 .PHONY: all tarball clean sync
 

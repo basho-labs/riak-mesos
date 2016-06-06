@@ -11,7 +11,7 @@ The Riak Mesos Framework supports the following environments:
  - Riak TS v1.3.0 (See [here](https://github.com/basho-labs/riak-mesos/releases) for supported packages)
  - Mesos version:
   - v0.26
-  - v0.27
+  - v0.28
  - OS:
   - Ubuntu 14.04
   - CentOS 7

@@ -1,6 +1,0 @@
-riak/packages
-riak/root
-.projectile
-.vagrant
-.tarball.*
-oauth.txt

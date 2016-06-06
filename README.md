@@ -3,6 +3,20 @@
 An [Apache Mesos](http://mesos.apache.org/) framework for [Riak TS](http://basho.com/products/riak-ts) and [Riak KV](http://basho.com/products/riak-kv/), a distributed NoSQL key-value data store that offers high availability, fault tolerance, operational simplicity, and scalability.
 
 
+## Supported systems
+
+The Riak Mesos Framework supports the following environments:
+
+ - Riak KV v2.1.4 (See [here](https://github.com/basho-labs/riak-mesos/releases) for supported packages)
+ - Riak TS v1.3.0 (See [here](https://github.com/basho-labs/riak-mesos/releases) for supported packages)
+ - Mesos version:
+  - v0.26
+  - v0.28
+ - OS:
+  - Ubuntu 14.04
+  - CentOS 7
+
+
 ## Installation
 
 Please refer to the documentation in [riak-mesos-tools](https://github.com/basho-labs/riak-mesos-tools) for information about installation and usage of the Riak Mesos Framework.

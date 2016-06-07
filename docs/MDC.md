@@ -71,7 +71,7 @@ Create a `riak-mesos` config specifying a unique `framework-name`.
 }
 ```
 
-Create a Riak cluster
+Create a Riak cluster.
 
 ```
 riak-mesos cluster create --cluster cluster-b
@@ -107,7 +107,7 @@ riak-mesos framework connect --remote-address mesos-cluster-a.com:31096 --remote
 
 ##### Framework A
 
-List the local clusters
+List the local clusters.
 
 ```
 riak-mesos cluster list
@@ -116,21 +116,21 @@ riak-mesos cluster list
 
 ##### Framework B
 
-List the local clusters
+List the local clusters.
 
 ```
 riak-mesos cluster list
 {"clusters":["framework-b"]}
 ```
 
-List the remote clusters, ensure it matches above
+List the remote clusters, ensure it matches above.
 
 ```
 riak-mesos cluster list remote
 {"clusters":["framework-a"]}
 ```
 
-Connect from `cluster-b` to `cluster-a`
+Connect from `cluster-b` to `cluster-a`.
 
 ```
 riak-mesos cluster repl connect --cluster cluster-b --remote-cluster cluster-a

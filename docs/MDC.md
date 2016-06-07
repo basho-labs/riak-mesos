@@ -138,42 +138,38 @@ riak-mesos cluster repl connect --cluster cluster-b --remote-cluster cluster-a
 
 ### Realtime Replication
 
-##### Framework A
+These commands can be run from `framework-a` or `framework-b`.
 
 Enable and start realtime replication from `cluster-a` to `cluster-b`.
 
 ```
-riak-mesos cluster repl realtime enable --cluster cluster-a --remote-cluster cluster-b
-riak-mesos cluster repl realtime start --cluster cluster-a --remote-cluster cluster-b
+riak-mesos cluster repl realtime enable --source cluster-a --sink cluster-b
+riak-mesos cluster repl realtime start --source cluster-a --sink cluster-b
 ```
-
-##### Framework B
 
 Enable and start realtime replication from `cluster-b` to `cluster-a`.
 
 ```
-riak-mesos cluster repl realtime enable --cluster cluster-b --remote-cluster cluster-a
-riak-mesos cluster repl realtime start --cluster cluster-b --remote-cluster cluster-a
+riak-mesos cluster repl realtime enable --source cluster-b --sink cluster-a
+riak-mesos cluster repl realtime start --source cluster-b --sink cluster-a
 ```
 
 ### Fullsync Replication
 
-##### Framework A
+These commands can be run from `framework-a` or `framework-b`.
 
 Enable and start fullsync replication from `cluster-a` to `cluster-b`.
 
 ```
-riak-mesos cluster repl fullsync enable --cluster cluster-a --remote-cluster cluster-b
-riak-mesos cluster repl fullsync start --cluster cluster-a --remote-cluster cluster-b
+riak-mesos cluster repl fullsync enable --source cluster-a --sink cluster-b
+riak-mesos cluster repl fullsync start --source cluster-a --sink cluster-b
 ```
-
-##### Framework B
 
 Enable and start fullsync replication from `cluster-b` to `cluster-a`.
 
 ```
-riak-mesos cluster repl fullsync enable --cluster cluster-b --remote-cluster cluster-a
-riak-mesos cluster repl fullsync start --cluster cluster-b --remote-cluster cluster-a
+riak-mesos cluster repl fullsync enable --source cluster-b --sink cluster-a
+riak-mesos cluster repl fullsync start --source cluster-b --sink cluster-a
 ```
 
 ### Other Commands

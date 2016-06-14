@@ -2,6 +2,7 @@
 
 An [Apache Mesos](http://mesos.apache.org/) framework for [Riak TS](http://basho.com/products/riak-ts) and [Riak KV](http://basho.com/products/riak-kv/), a distributed NoSQL key-value data store that offers high availability, fault tolerance, operational simplicity, and scalability.
 
+Preview available at [basho-labs.github.io/riak-mesos](http://basho-labs.github.io/riak-mesos).
 
 ## Supported systems
 

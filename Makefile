@@ -4,11 +4,11 @@ DCOS_REMOTE                   ?= $(BASE_DIR)/tools/riak-mesos-tools/config/confi
 TOOLS_TEMPLATE                ?= $(BASE_DIR)/tools/riak-mesos-tools/config/config.template.json
 TOOLS_REMOTE                  ?= $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json
 TOOLS_LOCAL                   ?= $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json
-REPO_TEMPLATE                 ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/config.template.json
+REPO_TEMPLATE                 ?= $(BASE_DIR)/config/config.template.json
 REPO_REMOTE                   ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/config.json
 TOOLS_VERSION_FILE            ?= $(BASE_DIR)/tools/riak-mesos-tools/riak_mesos/constants.py
 REPO_VERSION_FILE             ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/package.json
-REPO_CMD_TEMPLATE             ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/command.template.json
+REPO_CMD_TEMPLATE             ?= $(BASE_DIR)/config/command.template.json
 REPO_CMD_FILE                 ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/command.json
 
 .PHONY: all deps clean update-head
@@ -57,9 +57,9 @@ dev: deps tarball config
 	sed -i "s,{{scheduler_package}},$(shell basename $(shell cat $(BASE_DIR)/framework/riak-mesos-scheduler/packages/local.txt)),g" $(DCOS_REMOTE)
 .config.version:
 	cp $(REPO_CMD_TEMPLATE) $(REPO_CMD_FILE) && \
-	sed -i "s,^version = .*$$,version = '$(shell cd tools/riak-mesos-tools && git describe --tags)',g" $(TOOLS_VERSION_FILE) && \
-	sed -i "s,\"version\": \".*\",\"version\": \"$(shell cd tools/riak-mesos-dcos-repo && git describe --tags)\",g" $(REPO_VERSION_FILE) && \
-	sed -i "s,{{tools_version}},$(shell cd tools/riak-mesos-tools && git describe --tags),g" $(REPO_CMD_FILE) && \
+	sed -i "s,^version = .*$$,version = '$(shell git describe --tags --abbrev=0 | tr - .)',g" $(TOOLS_VERSION_FILE) && \
+	sed -i "s,\"version\": \".*\",\"version\": \"$(shell git describe --tags --abbrev=0 | tr - .)\",g" $(REPO_VERSION_FILE) && \
+	sed -i "s,{{tools_version}},$(shell cd tools/riak-mesos-tools && git rev-parse --abbrev-ref HEAD),g" $(REPO_CMD_FILE) && \
 	cd tools/riak-mesos-dcos-repo/scripts && \
 			./0-validate-version.sh && \
 			./1-validate-packages.sh && \

@@ -29,7 +29,7 @@ To build the full framework (including a copy of Riak-KV - see git submodules fo
 cd /vagrant/ && make dev
 # Use a pre-made config file appropriate for this vagrant environment
 mkdir -p /etc/riak-mesos
-ln -nsf /vagrant/config/config.vagrant.artifactory.json /etc/riak-mesos/config.json
+ln -nsf /vagrant/config/config.vagrant.github.json /etc/riak-mesos/config.json
 ```
 
 Test with `riak-mesos-tools`:

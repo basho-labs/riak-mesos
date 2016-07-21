@@ -127,25 +127,9 @@
                             "default": 2048.0
                         },
                         "constraints": {
-                            "type": "array",
-                            "items": {
-                                "type": "array",
-                                "items": [
-                                    {
-                                        "type": "string"
-                                    },
-                                    {
-                                        "type": "string",
-                                        "enum": ["UNIQUE", "CLUSTER", "GROUP_BY", "LIKE", "UNLIKE"]
-                                    },
-                                    {
-                                        "type": "string"
-                                    }
-                                ],
-                                "minItems": 2,
-                                "additionalItems": false
-                            },
-                            "description": "Scheduler constraints for Riak node tasks. Marathon constraints for the framework/scheduler instance. Valid constraint operators are one of UNIQUE, CLUSTER, GROUP_BY, LIKE, UNLIKE."
+                            "type": "string",
+                            "default": "[]",
+                            "description": "Scheduler constraints for Riak node tasks. Valid constraint operators are one of UNIQUE, CLUSTER, GROUP_BY, LIKE, UNLIKE."
                         }
                     }
                 },

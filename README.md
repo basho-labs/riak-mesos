@@ -20,7 +20,7 @@ The Riak Mesos Framework supports the following environments:
 
 ## Installation
 
-Please refer to the documentation in [riak-mesos-tools](https://github.com/basho-labs/riak-mesos-tools) for information about installation and usage of the Riak Mesos Framework.
+To install the Riak Mesos Framework in your Mesos or DC/OS cluster, please refer to the documentation in [riak-mesos-tools](https://github.com/basho-labs/riak-mesos-tools) for information about installation from published packages and usage of the Riak Mesos Framework.
 
 ## Build
 

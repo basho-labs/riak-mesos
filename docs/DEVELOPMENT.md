@@ -2,10 +2,13 @@
 
 For quick and convenient development, a Vagrant-based development environment is provided.
 
-To set it up, within the `riak-mesos-erlang` clone, simply run:
+To set it up, clone this repository and pull in all components from their git submodules:
 
 ```
-vagrant up
+ git clone https://github.com/basho-labs/riak-mesos
+ cd riak-mesos
+ git submodule update --init --recursive
+ vagrant up
 ```
 
 To log into the VM, now run:

@@ -1,5 +1,5 @@
-## NOTE: The following are controlled by the executor. Any attempt to set it manually
-# will be overridden in deployed nodes.
+## NOTE: When running Riak on Mesos, the following are controlled by the executor.
+# Any attempt to set it manually will be overridden in deployed nodes.
 #
 # handoff.port = {{handoffport}}
 # erlang.distribution.port_range.minimum = {{disterlport}}

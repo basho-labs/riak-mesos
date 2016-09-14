@@ -58,7 +58,7 @@ Both follow the exact same format, with the exception that, due to how DC/OS val
  "constraints": "[[ \"hostname\", \"UNIQUE\" ]]",
  ```
 
-This example is the most common usage for `.riak.scheduler.constraints`: it ensures all your Riak nodes are placed on unique Mesos agents.
+This example is the most common usage for `.riak.scheduler.constraints`: it rigidly ensures all your Riak nodes are placed on unique Mesos agents. NB: if you try to start more Riak nodes than you have Mesos Agents, this will result in some Riak nodes not starting until resources are freed.
 
 For full documentation of available constraint formats, see the [Marathon documentation](https://mesosphere.github.io/marathon/docs/constraints.html)
 

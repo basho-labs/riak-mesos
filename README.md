@@ -38,12 +38,30 @@ The RMF Scheduler uses the mesos-master HTTP API. It maintains the current clust
 
 #### Resourcing
 
-The Scheduler can be configured with several strategies for placement of Riak nodes, configurable via [constraints](#scheduler-constraints):
+The Scheduler can be configured with several strategies for placement of Riak nodes, configurable via constraints.
 
  - Unique hostnames: each Riak node will only be allowed on a mesos-agent with no existing Riak node
  - Distribution: spread Riak nodes across separate agents where possible
  - Host avoidance: avoid specific hosts or hostnames matching a pattern
  - Many more!
+
+There are 2 different sets of constraints to configure in your `config.json`:
+ - 1. `.riak.constraints`: the marathon constraints for the Scheduler task
+ - 2. `.riak.scheduler.constraints`: the internal constraints for the Riak nodes
+
+1. sets the constraints that will be set for the Scheduler task within Marathon - this way you can e.g. make sure multiple framework instances run on separate agents.
+2. sets constraints that will affect how the Scheduler places Riak nodes across your Mesos cluster.
+
+Both follow the exact same format, with the exception that, due to how DC/OS validates configuration against a schema, 2. must be a quoted string within DC/OS clusters, e.g.
+
+```
+ "constraints": "[[ \"hostname\", \"UNIQUE\" ]]",
+ ```
+
+This example is the most common usage for `.riak.scheduler.constraints`: it ensures all your Riak nodes are placed on unique Mesos agents.
+
+For full documentation of available constraint formats, see the [Marathon documentation](https://mesosphere.github.io/marathon/docs/constraints.html)
+
  
 ### Executor
 

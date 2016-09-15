@@ -11,8 +11,8 @@ The Riak Mesos Framework supports the following environments:
  - Riak KV v2.1.4 (See [here](https://github.com/basho-labs/riak-mesos/releases) for supported packages)
  - Riak TS v1.3.1 (See [here](https://github.com/basho-labs/riak-mesos/releases) for supported packages)
  - Mesos version:
-  - v0.26
   - v0.28
+  - v1.0
  - OS:
   - Ubuntu 14.04
   - CentOS 7
@@ -28,22 +28,68 @@ For build and testing information, visit [docs/DEVELOPMENT.md](docs/DEVELOPMENT.
 
 ## Architecture
 
-The Riak Mesos Framework is typically deployed as a marathon app via a CLI tool such as [riak-mesos or dcos riak](https://github.com/basho-labs/riak-mesos-tools). Once deployed, it can accept commands which result in the creation of Riak nodes as additional tasks on other Mesos agents.
+The Riak Mesos Framework is typically deployed as a Marathon app via a CLI tool such as [riak-mesos or dcos riak](https://github.com/basho-labs/riak-mesos-tools). Once deployed, it can accept commands which result in the creation of Riak nodes as additional tasks on other Mesos agents.
 
 ![Architecture](docs/riak-mesos-framework-architecture.png)
 
 ### Scheduler
 
-The RMF Scheduler uses the mesos-master HTTP API. It maintains the current cluster configuration in Zookeeper (providing resilience against Scheduler failure/restart), and ensures the running cluster topology matches the configuration at all times. The Scheduler provides an HTTP API to mutate the cluster configuration, as well as running a copy of [Riak Explorer](https://github.com/basho-labs/riak_explorer) to monitor the cluster.
+The RMF Scheduler uses the Mesos Master HTTP API. It maintains the current cluster configuration in Zookeeper (providing resilience against Scheduler failure/restart), and ensures the running cluster topology matches the configuration at all times. The Scheduler provides an HTTP API to mutate the cluster configuration, as well as running a copy of [Riak Explorer](https://github.com/basho-labs/riak_explorer) to monitor the cluster.
 
 #### Resourcing
 
-The Scheduler can be configured with several strategies for placement of Riak nodes, configurable via [constraints](#scheduler-constraints):
+The Scheduler can be configured with several strategies for placement of Riak nodes, configurable via constraints.
 
- - Unique hostnames: each Riak node will only be allowed on a mesos-agent with no existing Riak node
+ - Unique hostnames: each Riak node will only be allowed on a Mesos Agent with no existing Riak node
  - Distribution: spread Riak nodes across separate agents where possible
  - Host avoidance: avoid specific hosts or hostnames matching a pattern
  - Many more!
+
+There are 2 different sets of constraints to configure in your `config.json`:
+ - 1. `.riak.constraints`: the Marathon constraints for the Scheduler task
+ - 2. `.riak.scheduler.constraints`: the internal constraints for the Riak nodes
+
+1. sets the constraints that will be set for the Scheduler task within Marathon - this way you can e.g. make sure multiple framework instances run on separate agents.
+2. sets constraints that will affect how the Scheduler places Riak nodes across your Mesos cluster.
+
+Both follow the exact same format, with the exception that, due to how DC/OS validates configuration against a schema, 2. must be a quoted string within DC/OS clusters, e.g.
+
+```
+{"riak": {
+    ...
+    "scheduler": {
+        ...
+        "constraints": "[[ \"hostname\", \"UNIQUE\" ]]",
+    }
+}}
+ ```
+
+This example is the most common usage for `.riak.scheduler.constraints`: it rigidly ensures all your Riak nodes are placed on unique Mesos agents. NB: if you try to start more Riak nodes than you have Mesos Agents, this will result in some Riak nodes not starting until resources are freed. Instead, one may use the `"CLUSTER"` constraint to distribute tasks across fairly across Agents with a specific attribute:
+
+```
+{"riak": {
+    ...
+    "scheduler": {
+        ...
+        "constraints": "[[ \"rack_id\", \"CLUSTER\", \"rack-1\" ]]"
+    }
+}}
+```
+
+Or the `GROUP_BY` operator to distribute nodes across Agents by a specific attribute:
+
+```
+{"riak": {
+    ...
+    "scheduler": {
+        ...
+        "constraints": "[[ \"rack_id\", \"GROUP_BY\" ]]",
+    }
+}}
+```
+
+For full documentation of available constraint formats, and how to set attributes for your Agents, see the [Marathon documentation](https://mesosphere.github.io/marathon/docs/constraints.html)
+
  
 ### Executor
 
@@ -78,7 +124,7 @@ With the above features implemented, the workflow for the scheduler startup proc
 
 The executor also needs to employ some features for fault tolerance, much like the scheduler. The Riak Mesos Executor does the following:
 
-* **Enables checkpointing**: Checkpointing tells Mesos to persist status updates for tasks to disk, allowing those tasks to reconnect to the mesos agent for certain failure modes.
+* **Enables checkpointing**: Checkpointing tells Mesos to persist status updates for tasks to disk, allowing those tasks to reconnect to the Mesos agent for certain failure modes.
 * **Uses resource reservations**: Performing a `RESERVE` operation before launching tasks allows a task to be launched on the same Mesos agent again after a failure without the possibility of another framework taking those resources before a failover can take place.
 * **Uses persistent volumes**: Performing a `CREATE` opertaion before launching tasks (and after a `RESERVE` operation) instructs Mesos agents to create a volume for stateful data (such as the Riak data directory) which exists **outside** of the tasks container (which is normally deleted with garbage collection if a task fails).
 

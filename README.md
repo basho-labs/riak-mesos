@@ -55,12 +55,40 @@ There are 2 different sets of constraints to configure in your `config.json`:
 Both follow the exact same format, with the exception that, due to how DC/OS validates configuration against a schema, 2. must be a quoted string within DC/OS clusters, e.g.
 
 ```
- "constraints": "[[ \"hostname\", \"UNIQUE\" ]]",
+{"riak": {
+    ...
+    "scheduler": {
+        ...
+        "constraints": "[[ \"hostname\", \"UNIQUE\" ]]",
+    }
+}}
  ```
 
-This example is the most common usage for `.riak.scheduler.constraints`: it rigidly ensures all your Riak nodes are placed on unique Mesos agents. NB: if you try to start more Riak nodes than you have Mesos Agents, this will result in some Riak nodes not starting until resources are freed.
+This example is the most common usage for `.riak.scheduler.constraints`: it rigidly ensures all your Riak nodes are placed on unique Mesos agents. NB: if you try to start more Riak nodes than you have Mesos Agents, this will result in some Riak nodes not starting until resources are freed. Instead, one may use the `"CLUSTER"` constraint to distribute tasks across fairly across Agents with a specific attribute:
 
-For full documentation of available constraint formats, see the [Marathon documentation](https://mesosphere.github.io/marathon/docs/constraints.html)
+```
+{"riak": {
+    ...
+    "scheduler": {
+        ...
+        "constraints": "[[ \"rack_id\", \"CLUSTER\", \"rack-1\" ]]"
+    }
+}}
+```
+
+Or the `GROUP_BY` operator to distribute nodes across Agents by a specific attribute:
+
+```
+{"riak": {
+    ...
+    "scheduler": {
+        ...
+        "constraints": "[[ \"rack_id\", \"GROUP_BY\" ]]",
+    }
+}}
+```
+
+For full documentation of available constraint formats, and how to set attributes for your Agents, see the [Marathon documentation](https://mesosphere.github.io/marathon/docs/constraints.html)
 
  
 ### Executor

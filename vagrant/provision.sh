@@ -18,11 +18,14 @@ apt-get -y install python-dev libcppunit-dev libunwind8-dev autoconf autotools-d
 apt-get -y install openjdk-8-jdk default-jre python-setuptools python-protobuf
 update-java-alternatives -s /usr/lib/jvm/java-1.8.0-openjdk-amd64
 apt-get -y install libprotobuf-dev protobuf-compiler
-apt-get -y install marathon
+apt-get -y install zookeeper=3.4.5+dfsg-1
+apt-get -y install marathon=1.1.2-1.0.482.ubuntu1404
 #apt-get -y install mesos=0.26.0-0.2.145.ubuntu1404
 apt-get -y install mesos=0.28.2-2.0.27.ubuntu1404
+
+
 # apt-get -y install mesos # 1.0.0
-apt-mark hold mesos
+apt-mark hold mesos marathon zookeeper
 apt-get -y install lxc-docker
 apt-get -y install resolvconf
 

@@ -22,14 +22,14 @@
             "constraints": [["hostname", "UNIQUE"]]
         },
         "executor": {
-            "url": "https://github.com/basho-labs/riak-mesos-executor/releases/download/1.7.1/riak_mesos_executor-1.7.1-mesos-1.0.0-ubuntu-14.04.tar.gz",
+            "url": "https://github.com/basho-labs/riak-mesos-executor/releases/download/1.7.0/riak_mesos_executor-1.7.0-mesos-1.0.0-ubuntu-14.04.tar.gz",
             "cpus": 0.1,
             "mem": 512.0
         },
         "node": {
 
             "url": "https://github.com/basho-labs/riak-mesos/releases/download/1.2.0/riak_ts-1.3.1-ubuntu-14.04.tar.gz",
-            "patches-url": "https://github.com/basho-labs/riak-mesos-executor/releases/download/1.7.1/riak_erlpmd_patches-1.7.1-mesos-1.0.0-ubuntu-14.04.tar.gz",
+            "patches-url": "https://github.com/basho-labs/riak-mesos-executor/releases/download/1.7.0/riak_erlpmd_patches-1.7.0-mesos-1.0.0-ubuntu-14.04.tar.gz",
             "explorer-url": "https://github.com/basho-labs/riak_explorer/releases/download/1.2.1/riak_explorer-1.2.1.patch-ubuntu-14.04.tar.gz",
             "cpus": 0.25,
             "mem": 512.0,

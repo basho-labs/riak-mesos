@@ -8,8 +8,8 @@ Preview available at [basho-labs.github.io/riak-mesos](http://basho-labs.github.
 
 The Riak Mesos Framework supports the following environments:
 
- - Riak KV v2.1.4 (See [here](https://github.com/basho-labs/riak-mesos/releases) for supported packages)
- - Riak TS v1.3.1 (See [here](https://github.com/basho-labs/riak-mesos/releases) for supported packages)
+ - Riak KV v2.2.0 (See [here](https://github.com/basho-labs/riak-mesos/releases) for supported packages)
+ - Riak TS v1.4.0 (See [here](https://github.com/basho-labs/riak-mesos/releases) for supported packages)
  - Mesos version:
   - v0.28
   - v1.0

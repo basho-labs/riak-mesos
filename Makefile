@@ -29,10 +29,6 @@ dev: deps tarball config
 	sed -i "s,{{executor_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/local.txt),g" $(TOOLS_LOCAL) && \
 	sed -i "s,{{executor_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/remote.txt),g" $(REPO_REMOTE) && \
 	sed -i "s,{{executor_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/remote.txt),g" $(DCOS_REMOTE) && \
-	sed -i "s,{{node_url}},$(shell cat $(BASE_DIR)/riak/packages/remote.txt),g" $(TOOLS_REMOTE) && \
-	sed -i "s,{{node_url}},$(shell cat $(BASE_DIR)/riak/packages/local.txt),g" $(TOOLS_LOCAL) && \
-	sed -i "s,{{node_url}},$(shell cat $(BASE_DIR)/riak/packages/remote.txt),g" $(REPO_REMOTE) && \
-	sed -i "s,{{node_url}},$(shell cat $(BASE_DIR)/riak/packages/remote.txt),g" $(DCOS_REMOTE) && \
 	sed -i "s,{{director_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/remote.txt),g" $(TOOLS_REMOTE) && \
 	sed -i "s,{{director_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/local.txt),g" $(TOOLS_LOCAL) && \
 	sed -i "s,{{director_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/remote.txt),g" $(REPO_REMOTE) && \
@@ -49,8 +45,6 @@ dev: deps tarball config
 	sed -i "s,{{patches_package}},$(shell basename $(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/patches_local.txt)),g" $(DCOS_REMOTE) && \
 	sed -i "s,{{explorer_package}},$(shell basename $(shell cat $(BASE_DIR)/framework/riak_explorer/packages/local.txt)),g" $(REPO_REMOTE) && \
 	sed -i "s,{{explorer_package}},$(shell basename $(shell cat $(BASE_DIR)/framework/riak_explorer/packages/local.txt)),g" $(DCOS_REMOTE) && \
-	sed -i "s,{{node_package}},$(shell basename $(shell cat $(BASE_DIR)/riak/packages/local.txt)),g" $(REPO_REMOTE) && \
-	sed -i "s,{{node_package}},$(shell basename $(shell cat $(BASE_DIR)/riak/packages/local.txt)),g" $(DCOS_REMOTE) && \
 	sed -i "s,{{executor_package}},$(shell basename $(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/local.txt)),g" $(REPO_REMOTE) && \
 	sed -i "s,{{executor_package}},$(shell basename $(shell cat $(BASE_DIR)/framework/riak-mesos-executor/packages/local.txt)),g" $(DCOS_REMOTE) && \
 	sed -i "s,{{scheduler_package}},$(shell basename $(shell cat $(BASE_DIR)/framework/riak-mesos-scheduler/packages/local.txt)),g" $(REPO_REMOTE) && \
@@ -80,10 +74,7 @@ config: .config.packages .config.version
 	cd $(BASE_DIR)/framework/riak_explorer && $(MAKE) tarball && \
 	touch ../../.tarball.riak_explorer
 .tarball.framework: .tarball.riak-mesos-scheduler .tarball.riak-mesos-executor .tarball.riak-mesos-director .tarball.riak_explorer
-.tarball.riak:
-	cd $(BASE_DIR)/riak && $(MAKE) tarball && \
-	touch ../.tarball.riak
-tarball: .tarball.framework .tarball.riak
+tarball: .tarball.framework
 
 deps:
 	@if [ -z "$$(git submodule foreach ls)" ]; then \
@@ -95,10 +86,6 @@ clean-framework:
 	$(foreach dep,$(shell ls framework), \
 		cd $(BASE_DIR)/framework/$(dep) && \
 			$(MAKE) clean && rm -rf deps/* && rm -rf ebin/*.beam && git reset --hard HEAD;)
-clean-riak:
-	-rm .tarball.riak
-	-rm -rf riak/$(RIAK_SOURCE_DIR)/deps/*
-	cd riak && $(MAKE) clean
 clean: clean-framework
 
 update-head:
@@ -107,4 +94,4 @@ update-head:
 sync:
 	$(foreach dep,$(shell ls framework), \
 		cd $(BASE_DIR)/framework/$(dep) && $(MAKE) sync;)
-	cd $(BASE_DIR)/riak && make sync
+

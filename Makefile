@@ -4,12 +4,6 @@ TOOLS_REMOTE                  ?= $(BASE_DIR)/tools/riak-mesos-tools/config/confi
 TOOLS_LOCAL                   ?= $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json
 RIAK_KV_REMOTE                ?= "https://github.com/basho-labs/riak-mesos/releases/download/2.0.0-rc1/riak-2.2.0-ubuntu-14.04.tar.gz"
 RIAK_TS_REMOTE                ?= "https://github.com/basho-labs/riak-mesos/releases/download/2.0.0-rc1/riak_ts-1.4.0-ubuntu-14.04.tar.gz"
-# REPO_TEMPLATE                 ?= $(BASE_DIR)/config/config.template.json
-# REPO_REMOTE                   ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/config.json
-# TOOLS_VERSION_FILE            ?= $(BASE_DIR)/tools/riak-mesos-tools/riak_mesos/constants.py
-# REPO_VERSION_FILE             ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/package.json
-# REPO_CMD_TEMPLATE             ?= $(BASE_DIR)/config/command.template.json
-# REPO_CMD_FILE                 ?= $(BASE_DIR)/tools/riak-mesos-dcos-repo/repo/packages/R/riak/0/command.json
 
 .PHONY: all deps clean update-head
 
@@ -34,15 +28,7 @@ dev: deps tarball config
 	sed -i "s,{{riak_ts_1_4_url}},$(RIAK_TS_REMOTE),g" $(TOOLS_REMOTE) && \
 	sed -i "s,{{riak_ts_1_4_url}},$(RIAK_TS_REMOTE),g" $(TOOLS_LOCAL)
 .config.version:
-	cp $(REPO_CMD_TEMPLATE) $(REPO_CMD_FILE) && \
-	sed -i "s,^version = .*$$,version = '$(shell git describe --tags --abbrev=0 | tr - .)',g" $(TOOLS_VERSION_FILE) && \
-	sed -i "s,\"version\": \".*\",\"version\": \"$(shell git describe --tags --abbrev=0 | tr - .)\",g" $(REPO_VERSION_FILE) && \
-	sed -i "s,{{tools_version}},$(shell cd tools/riak-mesos-tools && git rev-parse --abbrev-ref HEAD),g" $(REPO_CMD_FILE) && \
-	cd tools/riak-mesos-dcos-repo/scripts && \
-			./0-validate-version.sh && \
-			./1-validate-packages.sh && \
-			./2-build-index.sh && \
-			./3-validate-index.sh
+	cd tools/riak-mesos-dcos-repo/scripts && ./build.sh
 config: .config.packages .config.version
 
 .tarball.riak-mesos-scheduler:

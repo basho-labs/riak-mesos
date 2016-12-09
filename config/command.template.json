@@ -1,5 +1,0 @@
-{
-  "pip": [
-    "git+https://github.com/basho-labs/riak-mesos-tools.git@{{tools_version}}#egg=riak_mesos"
-  ]
-}

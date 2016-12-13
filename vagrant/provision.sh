@@ -18,10 +18,15 @@ apt-get -y install python-dev libcppunit-dev libunwind8-dev autoconf autotools-d
 apt-get -y install openjdk-8-jdk default-jre python-setuptools python-protobuf
 update-java-alternatives -s /usr/lib/jvm/java-1.8.0-openjdk-amd64
 apt-get -y install libprotobuf-dev protobuf-compiler
+
+# tools
+apt-get -y install jq ngrep apt-show-versions
+
+# framework
 apt-get -y install zookeeper=3.4.5+dfsg-1
-apt-get -y install marathon=1.1.2-1.0.482.ubuntu1404
+apt-get -y install marathon=1.3.6-1.0.540.ubuntu1404
 #apt-get -y install mesos=0.26.0-0.2.145.ubuntu1404
-apt-get -y install mesos=0.28.2-2.0.27.ubuntu1404
+apt-get -y install mesos=1.0.1-2.0.93.ubuntu1404
 
 
 # apt-get -y install mesos # 1.0.0
@@ -52,6 +57,10 @@ service marathon restart
 apt-get -y install git s3cmd zip python-pip
 pip install jsonschema
 pip install virtualenv
+pip install mesos.cli
+# NB there's a transitive dep of protobuf and mesos.cli that causes issues if you install
+# protobuf==2.6.1 first...
+pip install protobuf==2.6.1
 
 # Install kerl, Erlang
 apt-get -y install libncurses5-dev libpam0g-dev

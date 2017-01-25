@@ -2,8 +2,8 @@ BASE_DIR                       = $(PWD)
 TOOLS_TEMPLATE                ?= $(BASE_DIR)/tools/riak-mesos-tools/config/config.template.json
 TOOLS_REMOTE                  ?= $(BASE_DIR)/tools/riak-mesos-tools/config/config.example.json
 TOOLS_LOCAL                   ?= $(BASE_DIR)/tools/riak-mesos-tools/config/config.local.json
-RIAK_KV_REMOTE                ?= "https://github.com/basho-labs/riak-mesos/releases/download/2.0.0-rc1/riak-2.2.0-ubuntu-14.04.tar.gz"
-RIAK_TS_REMOTE                ?= "https://github.com/basho-labs/riak-mesos/releases/download/2.0.0-rc1/riak_ts-1.4.0-ubuntu-14.04.tar.gz"
+RIAK_KV_REMOTE                ?= "https://github.com/basho-labs/riak-mesos/releases/download/2.0.0/riak-2.2.0-ubuntu-14.04.tar.gz"
+RIAK_TS_REMOTE                ?= "https://github.com/basho-labs/riak-mesos/releases/download/2.0.0/riak_ts-1.5.1-ubuntu-14.04.tar.gz"
 
 .PHONY: all deps clean update-head
 
@@ -25,8 +25,8 @@ dev: deps tarball config
 	sed -i "s,{{director_url}},$(shell cat $(BASE_DIR)/framework/riak-mesos-director/packages/local.txt),g" $(TOOLS_LOCAL) && \
 	sed -i "s,{{riak_kv_2_2_url}},$(RIAK_KV_REMOTE),g" $(TOOLS_REMOTE) && \
 	sed -i "s,{{riak_kv_2_2_url}},$(RIAK_KV_REMOTE),g" $(TOOLS_LOCAL) && \
-	sed -i "s,{{riak_ts_1_4_url}},$(RIAK_TS_REMOTE),g" $(TOOLS_REMOTE) && \
-	sed -i "s,{{riak_ts_1_4_url}},$(RIAK_TS_REMOTE),g" $(TOOLS_LOCAL)
+	sed -i "s,{{riak_ts_1_5_url}},$(RIAK_TS_REMOTE),g" $(TOOLS_REMOTE) && \
+	sed -i "s,{{riak_ts_1_5_url}},$(RIAK_TS_REMOTE),g" $(TOOLS_LOCAL)
 .config.version:
 	cd tools/riak-mesos-dcos-repo/scripts && ./build.sh
 config: .config.packages .config.version

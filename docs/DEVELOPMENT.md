@@ -47,6 +47,7 @@ riak-mesos framework wait-for-service --timeout 1200
 
 
 ```
+riak-mesos config riak-versions
 riak-mesos cluster list
 riak-mesos cluster create my-kv riak-kv-2-2
 riak-mesos cluster add-node my-kv

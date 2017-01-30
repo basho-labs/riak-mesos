@@ -1,5 +1,4 @@
-riak/packages
-riak/root
+packages
 .projectile
 .vagrant
 .tarball.*

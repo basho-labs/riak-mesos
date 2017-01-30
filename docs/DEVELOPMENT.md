@@ -31,20 +31,25 @@ To build the full framework (including a copy of Riak-KV - see git submodules fo
 # This will take some time to complete as it builds each component
 cd /vagrant/ && make dev
 # Use a pre-made config file appropriate for this vagrant environment
-mkdir -p /etc/riak-mesos
-ln -nsf /vagrant/config/config.vagrant.github.json /etc/riak-mesos/config.json
+mkdir -p ~/.config/riak-mesos
+ln -nsf /vagrant/tools/riak-mesos-tools/config/config.local.json ~/.config/riak-mesos/config.json
 ```
 
 Test with `riak-mesos-tools`:
 
 ```
-cd /vagrant/
+cd /vagrant/tools/riak-mesos-tools/
 make env
 source env/bin/activate
 riak-mesos framework install
+riak-mesos framework wait-for-service --timeout 1200
+```
+
+
+```
 riak-mesos cluster list
-riak-mesos cluster create
-riak-mesos node add
+riak-mesos cluster create my-kv riak-kv-2-2
+riak-mesos cluster add-node my-kv
 ```
 
 ## Release Build

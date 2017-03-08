@@ -9,18 +9,21 @@ Preview available at [basho-labs.github.io/riak-mesos](http://basho-labs.github.
 The Riak Mesos Framework supports the following environments:
 
  - Riak KV v2.2.0 (See [here](https://github.com/basho-labs/riak-mesos/releases) for supported packages)
- - Riak TS v1.4.0 (See [here](https://github.com/basho-labs/riak-mesos/releases) for supported packages)
+ - Riak TS v1.5.1 (See [here](https://github.com/basho-labs/riak-mesos/releases) for supported packages)
  - Mesos version:
   - v0.28
-  - v1.0
+  - v1.0+
  - OS:
   - Ubuntu 14.04
   - CentOS 7
+  - Debian 8
 
 
 ## Installation
 
-To install the Riak Mesos Framework in your Mesos or DC/OS cluster, please refer to the documentation in [riak-mesos-tools](https://github.com/basho-labs/riak-mesos-tools) for information about installation from published packages and usage of the Riak Mesos Framework.
+To install the Riak Mesos Framework in your Mesos cluster, please refer to the documentation in [riak-mesos-tools](https://github.com/basho-labs/riak-mesos-tools) for information about installation from published packages and usage of the Riak Mesos Framework.
+
+To install the Riak Mesos Framework in your DC/OS cluster, please see the [Getting Started guide](https://github.com/dcos/examples/tree/master/1.8/riak).
 
 ## Build
 
